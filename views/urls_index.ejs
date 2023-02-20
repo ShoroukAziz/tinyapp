@@ -19,6 +19,7 @@
         <tr>
           <th scope="col">Short URL ID</th>
           <th scope="col">Long URL</th>
+          <th scope="col">Short URL</th>
         </tr>
       </thead>
       <tbody>
@@ -28,7 +29,10 @@
               <%= id %>
             </td>
             <td>
-              <%= urls[id] %>
+              <a href="<%= urls[id] %>" target="_blank"><%= urls[id] %></a>
+            </td>
+            <td>
+               <a href="#" target="_blank"> localhost:8080/<%= id %></a>
             </td>
           </tr>
           <% } %>
