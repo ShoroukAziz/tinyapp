@@ -20,6 +20,7 @@ function generateRandomString() {
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
 
 
 const urlDatabase = {
@@ -51,13 +52,32 @@ app.post("/urls", (req, res) => {
 });
 
 app.get("/urls/:id", (req, res) => {
-  const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id] };
-  res.render("urls_show", templateVars);
+
+  const longURL = urlDatabase[req.params.id]
+
+  if (longURL) {
+    const templateVars = { id: req.params.id, longURL };
+    res.render("urls_show", templateVars);
+    return;
+  }
+  res.status(404);
+  res.render("not_found");
+  return;
+
 });
 
 app.get("/u/:id", (req, res) => {
   const longURL = urlDatabase[req.params.id]
-  res.redirect(longURL);
+
+  if (longURL) {
+    res.redirect(longURL);
+    return;
+  }
+  res.status(404);
+  res.render("not_found");
+  return;
+
+
 });
 
 app.get("/urls.json", (req, res) => {

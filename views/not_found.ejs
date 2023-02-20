@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/_head',{title:'Page Not Found'}) %>
+
+
+  <body>
+    <%- include ('partials/_header') %>
+      <div style="min-height: 90%; min-height: 90vh; display: flex;align-items: center;">
+
+        <div class="container align-middle col-6">
+          <div class="bg-light p-5 rounded text-center">
+            <img src="/404.png" />
+
+            <h1>404</h1>
+            <p class="lead"> Page Not Found</p>
+            <p>The page you are looking for doesn't exist. Make sure you have the correct id.</p>
+
+          </div>
+        </div>
+
+      </div>
+
+
+      <%- include('partials/_bootstrap_js') %>
+
+  </body>
+
+</html>
