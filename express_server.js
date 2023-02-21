@@ -76,6 +76,23 @@ app.get("/urls/:id", (req, res) => {
 
 });
 
+app.post("/urls/:id", (req, res) => {
+
+  const shortUrl = req.params.id;
+
+  if (urlDatabase[shortUrl]) {
+    const newLongURL = req.body.longURL;
+    urlDatabase[shortUrl].longURL = newLongURL;
+    res.redirect('/urls');
+    return;
+
+  }
+  res.status(404);
+  res.render("not_found");
+  return;
+
+});
+
 app.post("/urls/:id/delete", (req, res) => {
 
   const id = req.params.id;
