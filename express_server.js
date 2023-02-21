@@ -24,8 +24,14 @@ app.use(express.static('public'));
 
 
 const urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
+  "b2xVn2": {
+    longURL: "http://www.lighthouselabs.ca",
+    createdDate: "2023-02-20"
+  },
+  "9sm5xK": {
+    longURL: "http://www.google.com",
+    createdDate: "2023-02-21"
+  }
 };
 
 app.get("/", (req, res) => {
@@ -46,14 +52,18 @@ app.get("/urls/new", (req, res) => {
 app.post("/urls", (req, res) => {
 
   const shortUrl = generateRandomString();
-  urlDatabase[shortUrl] = req.body.longURL;
+
+  urlDatabase[shortUrl] = {
+    longURL: req.body.longURL,
+    createdDate: new Date().toISOString().split('T')[0]
+  }
   res.redirect(`/urls/${shortUrl}`);
 
 });
 
 app.get("/urls/:id", (req, res) => {
 
-  const longURL = urlDatabase[req.params.id]
+  const longURL = urlDatabase[req.params.id].longURL
 
   if (longURL) {
     const templateVars = { id: req.params.id, longURL };
@@ -67,7 +77,7 @@ app.get("/urls/:id", (req, res) => {
 });
 
 app.get("/u/:id", (req, res) => {
-  const longURL = urlDatabase[req.params.id]
+  const longURL = urlDatabase[req.params.id].longURL
 
   if (longURL) {
     res.redirect(longURL);

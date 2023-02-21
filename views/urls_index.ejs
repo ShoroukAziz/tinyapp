@@ -16,6 +16,7 @@
               <th scope="col">Short URL ID</th>
               <th scope="col">Long URL</th>
               <th scope="col">Short URL</th>
+              <th scope="col">Created Date</th>
             </tr>
           </thead>
           <tbody>
@@ -25,15 +26,17 @@
                   <%= id %>
                 </td>
                 <td>
-                  <a href="<%= urls[id] %>" target="_blank">
-                    <%= urls[id] %>
+                  <a href="<%= urls[id].longURL %>" target="_blank">
+                    <%= urls[id].longURL %>
                   </a>
                 </td>
                 <td>
                   <a href="/u/<%= id %>" target="_blank">
                     <%= id %>
                   </a>
-
+                </td>
+                <td>
+                  <%= urls[id].createdDate %>
                 </td>
               </tr>
               <% } %>
