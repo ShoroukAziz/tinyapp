@@ -34,6 +34,12 @@ const urlDatabase = {
   }
 };
 
+app.post("/login", (req, res) => {
+  res.cookie('userName', req.body.userName)
+  console.log(res.cookie);
+  res.redirect("/urls");
+})
+
 app.get("/", (req, res) => {
   res.redirect("/urls");
 });
