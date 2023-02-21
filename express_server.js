@@ -66,6 +66,12 @@ const users = {
     password: "dishwasher-funk",
   },
 };
+
+const errorMessages = {
+  emptyEmailOrPassword: "Email and password can't be empty.",
+  exisitingEmail: "The email you're trying to use already exist"
+}
+
 //
 // Routes
 //
@@ -86,6 +92,36 @@ app.get("/register", (req, res) => {
   res.render("register", templateVars);
 })
 
+app.post("/register", (req, res) => {
+
+  let error = false;
+  let errorMessage = "";
+
+  if (!req.body.email || !req.body.password) {
+    error = true;
+    errorMessage = errorMessages.emptyEmailOrPassword;
+  }
+
+  else if (findUserByEmail(req.body.email)) {
+    error = true;
+    errorMessage = errorMessages.exisitingEmail
+  }
+
+  if (error) {
+    templateVars = { username: req.cookies["username"], errorMessage };
+    res.render("register", templateVars);
+    return;
+  }
+
+  const userId = generateRandomString();
+  users[userId] = {
+    id: userId,
+    email: req.body.email,
+    password: req.body.password
+  }
+  res.cookie('user_id', userId);
+  res.redirect("/urls");
+})
 
 //Home Page
 app.get("/", (req, res) => {
