@@ -38,7 +38,11 @@ const urlDatabase = {
 
 app.post("/login", (req, res) => {
   res.cookie('username', req.body.username)
-  console.log(res.cookie);
+  res.redirect("/urls");
+})
+
+app.post("/logout", (req, res) => {
+  res.clearCookie('username');
   res.redirect("/urls");
 })
 
