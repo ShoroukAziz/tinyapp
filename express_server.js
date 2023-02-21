@@ -48,7 +48,7 @@ const urlDatabase = {
 // Routes
 //
 
-//Login & Logout
+///Register, Login & Logout 
 app.post("/login", (req, res) => {
   res.cookie('username', req.body.username)
   res.redirect("/urls");
@@ -57,6 +57,11 @@ app.post("/login", (req, res) => {
 app.post("/logout", (req, res) => {
   res.clearCookie('username');
   res.redirect("/urls");
+})
+
+app.get("/register", (req, res) => {
+  const templateVars = { username: req.cookies["username"] };
+  res.render("register", templateVars);
 })
 
 //Home Page
