@@ -22,10 +22,10 @@ const findUserByEmail = function (email) {
 
   for (userId of Object.keys(users)) {
     if (users[userId].email === email) {
-      return true;
+      return users[userId];
     }
   }
-  return false;
+  return null;
 }
 
 //
