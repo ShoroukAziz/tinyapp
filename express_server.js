@@ -7,7 +7,7 @@ const PORT = 8080;
 /*
  returns a string of 6 random alphanumeric characters
 */
-function generateRandomString() {
+const generateRandomString = function () {
 
   /*toString takes an integer in the range 2 through 36
    specifying the base to use for representing the number value.
@@ -16,6 +16,16 @@ function generateRandomString() {
    */
 
   return Math.random().toString(36).slice(2, 8).toUpperCase();
+}
+
+const findUserByEmail = function (email) {
+
+  for (userId of Object.keys(users)) {
+    if (users[userId].email === email) {
+      return true;
+    }
+  }
+  return false;
 }
 
 //
@@ -75,6 +85,7 @@ app.get("/register", (req, res) => {
   const templateVars = { username: req.cookies["username"] };
   res.render("register", templateVars);
 })
+
 
 //Home Page
 app.get("/", (req, res) => {
