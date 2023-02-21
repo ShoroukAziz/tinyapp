@@ -1,4 +1,5 @@
 const express = require("express");
+var cookieParser = require('cookie-parser')
 const app = express();
 const PORT = 8080;
 
@@ -21,6 +22,7 @@ function generateRandomString() {
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
+app.use(cookieParser())
 
 
 const urlDatabase = {
@@ -35,7 +37,7 @@ const urlDatabase = {
 };
 
 app.post("/login", (req, res) => {
-  res.cookie('userName', req.body.userName)
+  res.cookie('username', req.body.username)
   console.log(res.cookie);
   res.redirect("/urls");
 })
@@ -46,13 +48,13 @@ app.get("/", (req, res) => {
 
 app.get("/urls", (req, res) => {
 
-  const templateVars = { urls: urlDatabase };
+  const templateVars = { urls: urlDatabase, username: req.cookies["username"] };
   res.render("urls_index", templateVars);
 
 });
 
 app.get("/urls/new", (req, res) => {
-  res.render("urls_new");
+  res.render("urls_new", { username: req.cookies["username"] });
 });
 
 app.post("/urls", (req, res) => {
@@ -72,12 +74,12 @@ app.get("/urls/:id", (req, res) => {
   const longURL = urlDatabase[req.params.id].longURL
 
   if (longURL) {
-    const templateVars = { id: req.params.id, longURL };
+    const templateVars = { id: req.params.id, longURL, username: req.cookies["username"] };
     res.render("urls_show", templateVars);
     return;
   }
   res.status(404);
-  res.render("not_found");
+  res.render("not_found", { username: req.cookies["username"] });
   return;
 
 });
@@ -94,7 +96,7 @@ app.post("/urls/:id", (req, res) => {
 
   }
   res.status(404);
-  res.render("not_found");
+  res.render("not_found", { username: req.cookies["username"] });
   return;
 
 });
@@ -109,7 +111,7 @@ app.post("/urls/:id/delete", (req, res) => {
     return;
   }
   res.status(404);
-  res.render("not_found");
+  res.render("not_found", { username: req.cookies["username"] });
   return;
 
 });
@@ -122,7 +124,7 @@ app.get("/u/:id", (req, res) => {
     return;
   }
   res.status(404);
-  res.render("not_found");
+  res.render("not_found", { username: req.cookies["username"] });
   return;
 
 
