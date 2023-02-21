@@ -13,17 +13,15 @@
       <% if (locals.user) { %>
 
         <span class="ext-capitalize text-light">Welcome <%- user.email %>!&nbsp;</span>
-        <form class="form-inline" method="post" action="/logout">
+        <form class="form-inline" method="POST" action="/logout">
           <button class=" btn btn-light my-2 my-sm-0" type="submit">Logout</button>
         </form>
 
-
         <%} else { %>
-          <form class="form-inline" method="post" action="/login">
-            <input class="form-control mr-sm-2" placeholder="username" name="username" type="text">
-            <button class=" btn btn-light my-2 my-sm-0" type="submit">Login</button>
-          </form>
+          <a href="/login" class=" btn btn-light mr-1" role="button">Login</a>
+          <a href="/register" class=" btn btn-light " role="button">Register</a>
           <% } %>
+
 
     </div>
   </nav>
