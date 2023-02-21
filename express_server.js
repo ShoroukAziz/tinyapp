@@ -96,10 +96,13 @@ app.post("/urls", (req, res) => {
 //Read
 app.get("/urls/:id", (req, res) => {
 
-  const longURL = urlDatabase[req.params.id].longURL
 
-  if (longURL) {
-    const templateVars = { id: req.params.id, longURL, username: req.cookies["username"] };
+  if (urlDatabase[req.params.id]) {
+    const templateVars = {
+      id: req.params.id,
+      longURL: urlDatabase[req.params.id].longURL,
+      username: req.cookies["username"]
+    };
     res.render("urls_show", templateVars);
     return;
   }
@@ -143,10 +146,9 @@ app.post("/urls/:id/delete", (req, res) => {
 });
 // Main Function
 app.get("/u/:id", (req, res) => {
-  const longURL = urlDatabase[req.params.id].longURL
 
-  if (longURL) {
-    res.redirect(longURL);
+  if (urlDatabase[req.params.id]) {
+    res.redirect(urlDatabase[req.params.id].longURL);
     return;
   }
   res.status(404);
