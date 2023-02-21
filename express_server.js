@@ -78,17 +78,19 @@ const errorMessages = {
 
 ///Register, Login & Logout 
 app.post("/login", (req, res) => {
+  //todo
   res.cookie('username', req.body.username)
   res.redirect("/urls");
 })
 
 app.post("/logout", (req, res) => {
-  res.clearCookie('username');
+  res.clearCookie('user_id');
   res.redirect("/urls");
 })
 
 app.get("/register", (req, res) => {
-  const templateVars = { username: req.cookies["username"] };
+
+  const templateVars = { user: users[req.cookies['user_id']] };
   res.render("register", templateVars);
 })
 
@@ -108,7 +110,7 @@ app.post("/register", (req, res) => {
   }
 
   if (error) {
-    templateVars = { username: req.cookies["username"], errorMessage };
+    templateVars = { user: users[req.cookies['user_id']], errorMessage };
     res.render("register", templateVars);
     return;
   }
@@ -130,14 +132,14 @@ app.get("/", (req, res) => {
 
 app.get("/urls", (req, res) => {
 
-  const templateVars = { urls: urlDatabase, username: req.cookies["username"] };
+  const templateVars = { urls: urlDatabase, user: users[req.cookies['user_id']] };
   res.render("urls_index", templateVars);
 
 });
 
 //Create
 app.get("/urls/new", (req, res) => {
-  res.render("urls_new", { username: req.cookies["username"] });
+  res.render("urls_new", { user: users[req.cookies['user_id']] });
 });
 
 app.post("/urls", (req, res) => {
@@ -160,7 +162,7 @@ app.get("/urls/:id", (req, res) => {
     const templateVars = {
       id: req.params.id,
       longURL: urlDatabase[req.params.id].longURL,
-      username: req.cookies["username"]
+      user: users[req.cookies['user_id']]
     };
     res.render("urls_show", templateVars);
     return;
@@ -184,7 +186,7 @@ app.post("/urls/:id", (req, res) => {
 
   }
   res.status(404);
-  res.render("not_found", { username: req.cookies["username"] });
+  res.render("not_found", { user: users[req.cookies['user_id']] });
   return;
 
 });
@@ -199,7 +201,7 @@ app.post("/urls/:id/delete", (req, res) => {
     return;
   }
   res.status(404);
-  res.render("not_found", { username: req.cookies["username"] });
+  res.render("not_found", { user: users[req.cookies['user_id']] });
   return;
 
 });
@@ -211,7 +213,7 @@ app.get("/u/:id", (req, res) => {
     return;
   }
   res.status(404);
-  res.render("not_found", { username: req.cookies["username"] });
+  res.render("not_found", { user: users[req.cookies['user_id']] });
   return;
 
 
