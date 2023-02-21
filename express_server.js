@@ -77,6 +77,14 @@ const errorMessages = {
 //
 
 ///Register, Login & Logout 
+
+app.get("/login", (req, res) => {
+
+  //const templateVars = { user: users[req.cookies['user_id']] };
+  res.render("login");
+})
+
+
 app.post("/login", (req, res) => {
   //todo
   res.cookie('username', req.body.username)
