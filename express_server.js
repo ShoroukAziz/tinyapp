@@ -111,6 +111,7 @@ app.post("/register", (req, res) => {
 
   if (error) {
     templateVars = { user: users[req.cookies['user_id']], errorMessage };
+    res.status(400);
     res.render("register", templateVars);
     return;
   }
