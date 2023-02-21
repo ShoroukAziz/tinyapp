@@ -1,5 +1,5 @@
 const express = require("express");
-var cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser')
 const app = express();
 const PORT = 8080;
 
@@ -18,13 +18,21 @@ function generateRandomString() {
   return Math.random().toString(36).slice(2, 8).toUpperCase();
 }
 
-
+//
+// Config
+//
 app.set("view engine", "ejs");
+
+//
+// Middleware
+//
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.use(cookieParser())
 
-
+//
+// Database
+//
 const urlDatabase = {
   "b2xVn2": {
     longURL: "http://www.lighthouselabs.ca",
@@ -36,6 +44,11 @@ const urlDatabase = {
   }
 };
 
+//
+// Routes
+//
+
+//Login & Logout
 app.post("/login", (req, res) => {
   res.cookie('username', req.body.username)
   res.redirect("/urls");
@@ -46,6 +59,7 @@ app.post("/logout", (req, res) => {
   res.redirect("/urls");
 })
 
+//Home Page
 app.get("/", (req, res) => {
   res.redirect("/urls");
 });
@@ -57,6 +71,7 @@ app.get("/urls", (req, res) => {
 
 });
 
+//Create
 app.get("/urls/new", (req, res) => {
   res.render("urls_new", { username: req.cookies["username"] });
 });
@@ -73,6 +88,7 @@ app.post("/urls", (req, res) => {
 
 });
 
+//Read
 app.get("/urls/:id", (req, res) => {
 
   const longURL = urlDatabase[req.params.id].longURL
@@ -88,6 +104,7 @@ app.get("/urls/:id", (req, res) => {
 
 });
 
+//Update
 app.post("/urls/:id", (req, res) => {
 
   const shortUrl = req.params.id;
@@ -104,7 +121,7 @@ app.post("/urls/:id", (req, res) => {
   return;
 
 });
-
+//Delete
 app.post("/urls/:id/delete", (req, res) => {
 
   const id = req.params.id;
@@ -119,7 +136,7 @@ app.post("/urls/:id/delete", (req, res) => {
   return;
 
 });
-
+// Main Function
 app.get("/u/:id", (req, res) => {
   const longURL = urlDatabase[req.params.id].longURL
 
