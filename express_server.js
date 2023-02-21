@@ -76,6 +76,21 @@ app.get("/urls/:id", (req, res) => {
 
 });
 
+app.post("/urls/:id/delete", (req, res) => {
+
+  const id = req.params.id;
+
+  if (urlDatabase[req.params.id]) {
+    delete urlDatabase[req.params.id];
+    res.redirect('/urls');
+    return;
+  }
+  res.status(404);
+  res.render("not_found");
+  return;
+
+});
+
 app.get("/u/:id", (req, res) => {
   const longURL = urlDatabase[req.params.id].longURL
 
