@@ -16,7 +16,10 @@
           <button class=" btn btn-light my-2 my-sm-0" type="submit">Login</button>
         </form>
         <%} else { %>
-          <span class="text-uppercase text-light"><%- username %></span>
+          <span class="ext-capitalize text-light">Welcome <%- username %>!&nbsp;</span>
+          <form class="form-inline" method="post" action="/logout">
+            <button class=" btn btn-light my-2 my-sm-0" type="submit">Logout</button>
+          </form>
           <% } %>
 
     </div>
