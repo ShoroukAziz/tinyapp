@@ -44,7 +44,7 @@ describe('findUserByEmail', () => {
   it('should return null when given a non-existent email', () => {
     const user = findUserByEmail("hello@example.com", testUsers);
     assert.equal(user, null);
-  })
+  });
 });
 
 describe('urlsForUser', () => {
@@ -57,14 +57,14 @@ describe('urlsForUser', () => {
         createdDate: "2023-02-21",
         userID: "ah48lk",
       }
-    }
+    };
     assert.deepEqual(urls, expectedURLs);
   });
 
   it('should return an empty opject if the given user doen\'t exist', () => {
     const urls = urlsForUser("45fy", urlDatabase);
     assert.deepEqual(urls, {});
-  })
+  });
 });
 
 
