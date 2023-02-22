@@ -8,18 +8,23 @@ const urlDatabase = {
     longURL: "http://www.google.com",
     createdDate: "2023-02-21",
     userID: "aJ48lW",
+  },
+  "9sm5xg": {
+    longURL: "http://www.google.com",
+    createdDate: "2023-02-21",
+    userID: "ah48lk",
   }
 };
 
 
 const users = {
-  userRandomID: {
+  aJ48lW: {
     id: "aJ48lW",
     email: "user@example.com",
     password: "purple-monkey-dinosaur",
   },
-  user2RandomID: {
-    id: "user2RandomID",
+  ah48lk: {
+    id: "ah48lk",
     email: "user2@example.com",
     password: "dishwasher-funk",
   },
