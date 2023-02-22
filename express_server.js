@@ -22,11 +22,9 @@ const { urlDatabase, users, errorMessages } = require('./databses')
 // Routes
 //
 
-///Register, Login & Logout 
 
+// Login
 app.get("/login", (req, res) => {
-
-  //const templateVars = { user: users[req.cookies['user_id']] };
   res.render("login");
 })
 
@@ -53,20 +51,21 @@ app.post("/login", (req, res) => {
   }
 
   if (error) {
-    templateVars = { errorMessage };
     res.status(403);
-    res.render("login", templateVars);
+    res.render("login", { errorMessage });
     return;
   }
   res.cookie('user_id', user.id);
   res.redirect("/urls");
 })
 
+// Logout
 app.post("/logout", (req, res) => {
   res.clearCookie('user_id');
   res.redirect("/login");
 })
 
+// Register
 app.get("/register", (req, res) => {
 
   const templateVars = { user: users[req.cookies['user_id']] };
@@ -89,9 +88,8 @@ app.post("/register", (req, res) => {
   }
 
   if (error) {
-    templateVars = { user: users[req.cookies['user_id']], errorMessage };
     res.status(400);
-    res.render("register", templateVars);
+    res.render("register", { errorMessage });
     return;
   }
 
