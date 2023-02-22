@@ -1,13 +1,13 @@
-const express = require("express");
+const express = require('express');
 const cookieSession = require('cookie-session');
-const bcrypt = require("bcryptjs");
+const bcrypt = require('bcryptjs');
 const methodOverride = require('method-override');
 
 const app = express();
 const PORT = 8080;
 
 // Server Config
-app.set("view engine", "ejs");
+app.set('view engine', 'ejs');
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
@@ -35,19 +35,19 @@ const { urlDatabase, users, errorMessages } = require('./databses');
 
 
 // Login
-app.get("/login", (req, res) => {
+app.get('/login', (req, res) => {
 
   if (req.session.user_id) {
     res.redirect('/urls');
     return;
   }
-  res.render("login");
+  res.render('login');
 });
 
 
-app.post("/login", (req, res) => {
+app.post('/login', (req, res) => {
   let error = false;
-  let errorMessage = "";
+  let errorMessage = '';
 
   const user = findUserByEmail(req.body.email, users);
 
@@ -65,34 +65,34 @@ app.post("/login", (req, res) => {
 
   if (error) {
     res.status(403);
-    res.render("login", { errorMessage });
+    res.render('login', { errorMessage });
     return;
   }
   req.session.user_id = user.id;
-  res.redirect("/urls");
+  res.redirect('/urls');
 });
 
 // Logout
-app.post("/logout", (req, res) => {
+app.post('/logout', (req, res) => {
   req.session = null;
-  res.redirect("/login");
+  res.redirect('/login');
 });
 
 // Register
-app.get("/register", (req, res) => {
+app.get('/register', (req, res) => {
 
   if (req.session.user_id) {
     res.redirect('/urls');
     return;
   }
 
-  res.render("register");
+  res.render('register');
 });
 
-app.post("/register", (req, res) => {
+app.post('/register', (req, res) => {
 
   let error = false;
-  let errorMessage = "";
+  let errorMessage = '';
 
   if (!req.body.email || !req.body.password) {
     error = true;
@@ -104,7 +104,7 @@ app.post("/register", (req, res) => {
 
   if (error) {
     res.status(400);
-    res.render("register", { errorMessage });
+    res.render('register', { errorMessage });
     return;
   }
 
@@ -117,37 +117,37 @@ app.post("/register", (req, res) => {
     password: hashedPassword
   };
   req.session.user_id = userId;
-  res.redirect("/urls");
+  res.redirect('/urls');
 });
 
 //Home Page
-app.get("/", (req, res) => {
-  res.redirect("/urls");
+app.get('/', (req, res) => {
+  res.redirect('/urls');
 });
 
-app.get("/urls", (req, res) => {
+app.get('/urls', (req, res) => {
 
   const userId = req.session.user_id;
   if (!userId) {
-    res.render("forbidden");
+    res.render('forbidden');
     return;
   }
   const templateVars = { urls: urlsForUser(userId, urlDatabase), user: users[userId] };
-  res.render("urls_index", templateVars);
+  res.render('urls_index', templateVars);
 
 });
 
 //Create
-app.get("/urls/new", (req, res) => {
+app.get('/urls/new', (req, res) => {
 
   if (!req.session.user_id) {
     res.redirect('/login');
     return;
   }
-  res.render("urls_new", { user: users[req.session.user_id] });
+  res.render('urls_new', { user: users[req.session.user_id] });
 });
 
-app.post("/urls", (req, res) => {
+app.post('/urls', (req, res) => {
 
   if (!req.session.user_id) {
     res.status(403);
@@ -165,11 +165,11 @@ app.post("/urls", (req, res) => {
 
 });
 //Read
-app.get("/urls/:id", (req, res) => {
+app.get('/urls/:id', (req, res) => {
 
   const userId = req.session.user_id;
   if (!userId) {
-    res.render("forbidden");
+    res.render('forbidden');
     return;
   }
   if (urlDatabase[req.params.id]) {
@@ -180,27 +180,27 @@ app.get("/urls/:id", (req, res) => {
         longURL: urlDatabase[req.params.id].longURL,
         user: users[userId]
       };
-      res.render("urls_show", templateVars);
+      res.render('urls_show', templateVars);
       return;
     }
     res.status(403);
-    res.render("no_permission");
+    res.render('no_permission');
     return;
 
 
   }
   res.status(404);
-  res.render("not_found", { user: users[req.session.user_id] });
+  res.render('not_found', { user: users[req.session.user_id] });
   return;
 
 });
 
 //Update
-app.put("/urls/:id", (req, res) => {
+app.put('/urls/:id', (req, res) => {
 
   const userId = req.session.user_id;
   if (!userId) {
-    res.render("forbidden");
+    res.render('forbidden');
     return;
   }
 
@@ -215,20 +215,20 @@ app.put("/urls/:id", (req, res) => {
       return;
     }
     res.status(403);
-    res.render("no_permission");
+    res.render('no_permission');
     return;
   }
   res.status(404);
-  res.render("not_found", { user: users[req.session.user_id] });
+  res.render('not_found', { user: users[req.session.user_id] });
   return;
 
 });
 //Delete
-app.delete("/urls/:id", (req, res) => {
+app.delete('/urls/:id', (req, res) => {
 
   const userId = req.session.user_id;
   if (!userId) {
-    res.render("forbidden");
+    res.render('forbidden');
     return;
   }
 
@@ -240,24 +240,24 @@ app.delete("/urls/:id", (req, res) => {
       return;
     }
     res.status(403);
-    res.render("no_permission");
+    res.render('no_permission');
     return;
 
   }
   res.status(404);
-  res.render("not_found", { user: users[req.session.userId] });
+  res.render('not_found', { user: users[req.session.userId] });
   return;
 
 });
 // Main Function
-app.get("/u/:id", (req, res) => {
+app.get('/u/:id', (req, res) => {
 
   if (urlDatabase[req.params.id]) {
     res.redirect(urlDatabase[req.params.id].longURL);
     return;
   }
   res.status(404);
-  res.render("not_found", { user: users[req.session.user_id] });
+  res.render('not_found', { user: users[req.session.user_id] });
   return;
 
 
