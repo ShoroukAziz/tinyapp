@@ -3,76 +3,20 @@ const cookieParser = require('cookie-parser')
 const app = express();
 const PORT = 8080;
 
-
-/*
- returns a string of 6 random alphanumeric characters
-*/
-const generateRandomString = function () {
-
-  /*toString takes an integer in the range 2 through 36
-   specifying the base to use for representing the number value.
-   The default is 10. Here we're using base 36 to get a range
-   from 0 to 9 and A to Z
-   */
-
-  return Math.random().toString(36).slice(2, 8).toUpperCase();
-}
-
-const findUserByEmail = function (email) {
-
-  for (userId of Object.keys(users)) {
-    if (users[userId].email === email) {
-      return users[userId];
-    }
-  }
-  return null;
-}
-
-//
-// Config
-//
+// Server Config
 app.set("view engine", "ejs");
 
-//
 // Middleware
-//
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.use(cookieParser())
 
-//
+// Helper Functions
+const { generateRandomString, findUserByEmail } = require('./helper');
+
 // Databases
-//
-const urlDatabase = {
-  "b2xVn2": {
-    longURL: "http://www.lighthouselabs.ca",
-    createdDate: "2023-02-20"
-  },
-  "9sm5xK": {
-    longURL: "http://www.google.com",
-    createdDate: "2023-02-21"
-  }
-};
+const { urlDatabase, users, errorMessages } = require('./databses')
 
-const users = {
-  userRandomID: {
-    id: "userRandomID",
-    email: "user@example.com",
-    password: "purple-monkey-dinosaur",
-  },
-  user2RandomID: {
-    id: "user2RandomID",
-    email: "user2@example.com",
-    password: "dishwasher-funk",
-  },
-};
-
-const errorMessages = {
-  emptyEmailOrPassword: "Email and password can't be empty.",
-  exisitingEmail: "The email you're trying to use already exist",
-  userNotFound: "There's no user registered with that email.",
-  wrongPassword: "The email and password you typed don't match."
-}
 
 //
 // Routes
