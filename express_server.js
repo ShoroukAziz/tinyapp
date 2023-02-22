@@ -25,6 +25,11 @@ const { urlDatabase, users, errorMessages } = require('./databses')
 
 // Login
 app.get("/login", (req, res) => {
+
+  if (req.cookies['user_id']) {
+    res.redirect('/urls');
+    return;
+  }
   res.render("login");
 })
 
@@ -68,8 +73,11 @@ app.post("/logout", (req, res) => {
 // Register
 app.get("/register", (req, res) => {
 
-  const templateVars = { user: users[req.cookies['user_id']] };
-  res.render("register", templateVars);
+  if (req.cookies['user_id']) {
+    res.redirect('/urls');
+    return;
+  }
+  res.render("register");
 })
 
 app.post("/register", (req, res) => {
