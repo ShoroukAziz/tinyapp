@@ -12,7 +12,7 @@ app.use(express.static('public'));
 app.use(cookieParser())
 
 // Helper Functions
-const { generateRandomString, findUserByEmail } = require('./helper');
+const { generateRandomString, findUserByEmail, urlsForUser } = require('./helper');
 
 // Databases
 const { urlDatabase, users, errorMessages } = require('./databses')
@@ -118,11 +118,12 @@ app.get("/", (req, res) => {
 
 app.get("/urls", (req, res) => {
 
-  if (!req.cookies['user_id']) {
+  const user_id = req.cookies['user_id'];
+  if (!user_id) {
     res.render("forbidden");
     return;
   }
-  const templateVars = { urls: urlDatabase, user: users[req.cookies['user_id']] };
+  const templateVars = { urls: urlsForUser(user_id), user: users[user_id] };
   res.render("urls_index", templateVars);
 
 });
@@ -156,19 +157,27 @@ app.post("/urls", (req, res) => {
 //Read
 app.get("/urls/:id", (req, res) => {
 
-  if (!req.cookies['user_id']) {
+  const user_id = req.cookies['user_id'];
+  if (!user_id) {
     res.render("forbidden");
     return;
   }
-
   if (urlDatabase[req.params.id]) {
-    const templateVars = {
-      id: req.params.id,
-      longURL: urlDatabase[req.params.id].longURL,
-      user: users[req.cookies['user_id']]
-    };
-    res.render("urls_show", templateVars);
+
+    if (urlDatabase[req.params.id].userID === user_id) {
+      const templateVars = {
+        id: req.params.id,
+        longURL: urlDatabase[req.params.id].longURL,
+        user: users[user_id]
+      };
+      res.render("urls_show", templateVars);
+      return;
+    }
+    res.status(403)
+    res.render("no_permission");
     return;
+
+
   }
   res.status(404);
   res.render("not_found", { user: users[req.cookies['user_id']] });
