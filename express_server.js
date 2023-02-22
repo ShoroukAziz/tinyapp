@@ -1,5 +1,5 @@
 const express = require("express");
-const cookieParser = require('cookie-parser')
+const cookieSession = require('cookie-session')
 const bcrypt = require("bcryptjs");
 
 const app = express();
@@ -11,7 +11,14 @@ app.set("view engine", "ejs");
 // Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
-app.use(cookieParser())
+
+app.use(cookieSession({
+  name: 'session',
+  keys: ['key1', 'key2'],
+
+  // Cookie Options
+  maxAge: 24 * 60 * 60 * 1000 // 24 hours
+}))
 
 // Helper Functions
 const { generateRandomString, findUserByEmail, urlsForUser } = require('./helper');
@@ -28,7 +35,7 @@ const { urlDatabase, users, errorMessages } = require('./databses')
 // Login
 app.get("/login", (req, res) => {
 
-  if (req.cookies['user_id']) {
+  if (req.session.user_id) {
     res.redirect('/urls');
     return;
   }
@@ -62,20 +69,20 @@ app.post("/login", (req, res) => {
     res.render("login", { errorMessage });
     return;
   }
-  res.cookie('user_id', user.id);
+  req.session.user_id = user.id;
   res.redirect("/urls");
 })
 
 // Logout
 app.post("/logout", (req, res) => {
-  res.clearCookie('user_id');
+  req.session = null;
   res.redirect("/login");
 })
 
 // Register
 app.get("/register", (req, res) => {
 
-  if (req.cookies['user_id']) {
+  if (req.session.user_id) {
     res.redirect('/urls');
     return;
   }
@@ -112,7 +119,7 @@ app.post("/register", (req, res) => {
     email: req.body.email,
     password: hashedPassword
   }
-  res.cookie('user_id', userId);
+  req.session.user_id = userId;
   res.redirect("/urls");
 })
 
@@ -123,7 +130,7 @@ app.get("/", (req, res) => {
 
 app.get("/urls", (req, res) => {
 
-  const user_id = req.cookies['user_id'];
+  const user_id = req.session.user_id;
   if (!user_id) {
     res.render("forbidden");
     return;
@@ -136,16 +143,16 @@ app.get("/urls", (req, res) => {
 //Create
 app.get("/urls/new", (req, res) => {
 
-  if (!req.cookies['user_id']) {
+  if (!req.session.user_id) {
     res.redirect('/login');
     return;
   }
-  res.render("urls_new", { user: users[req.cookies['user_id']] });
+  res.render("urls_new", { user: users[req.session.user_id] });
 });
 
 app.post("/urls", (req, res) => {
 
-  if (!req.cookies['user_id']) {
+  if (!req.session.user_id) {
     res.status(403);
     res.render('forbidden');
     return;
@@ -155,7 +162,7 @@ app.post("/urls", (req, res) => {
   urlDatabase[shortUrl] = {
     longURL: req.body.longURL,
     createdDate: new Date().toISOString().split('T')[0],
-    userID: req.cookies['user_id']
+    userID: req.session.user_id
   }
   res.redirect(`/urls/${shortUrl}`);
 
@@ -163,7 +170,7 @@ app.post("/urls", (req, res) => {
 //Read
 app.get("/urls/:id", (req, res) => {
 
-  const user_id = req.cookies['user_id'];
+  const user_id = req.session.user_id;
   if (!user_id) {
     res.render("forbidden");
     return;
@@ -186,7 +193,7 @@ app.get("/urls/:id", (req, res) => {
 
   }
   res.status(404);
-  res.render("not_found", { user: users[req.cookies['user_id']] });
+  res.render("not_found", { user: users[req.session.user_id] });
   return;
 
 });
@@ -194,7 +201,7 @@ app.get("/urls/:id", (req, res) => {
 //Update
 app.post("/urls/:id", (req, res) => {
 
-  const user_id = req.cookies['user_id'];
+  const user_id = req.session.user_id;
   if (!user_id) {
     res.render("forbidden");
     return;
@@ -215,14 +222,14 @@ app.post("/urls/:id", (req, res) => {
     return;
   }
   res.status(404);
-  res.render("not_found", { user: users[req.cookies['user_id']] });
+  res.render("not_found", { user: users[req.session.user_id] });
   return;
 
 });
 //Delete
 app.post("/urls/:id/delete", (req, res) => {
 
-  const user_id = req.cookies['user_id'];
+  const user_id = req.session.user_id;
   if (!user_id) {
     res.render("forbidden");
     return;
@@ -243,7 +250,7 @@ app.post("/urls/:id/delete", (req, res) => {
 
   }
   res.status(404);
-  res.render("not_found", { user: users[req.cookies['user_id']] });
+  res.render("not_found", { user: users[req.session.user_id] });
   return;
 
 });
@@ -255,7 +262,7 @@ app.get("/u/:id", (req, res) => {
     return;
   }
   res.status(404);
-  res.render("not_found", { user: users[req.cookies['user_id']] });
+  res.render("not_found", { user: users[req.session.user_id] });
   return;
 
 
