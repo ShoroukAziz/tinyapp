@@ -1,7 +1,3 @@
-const users = require('./databses').users;
-const urlDatabase = require('./databses').urlDatabase;
-
-
 /*
  returns a string of 6 random alphanumeric characters
 */
@@ -16,17 +12,17 @@ const generateRandomString = function () {
   return Math.random().toString(36).slice(2, 8).toUpperCase();
 }
 
-const findUserByEmail = function (email) {
+const findUserByEmail = function (email, userDatabase) {
 
-  for (userId of Object.keys(users)) {
-    if (users[userId].email === email) {
-      return users[userId];
+  for (userId of Object.keys(userDatabase)) {
+    if (userDatabase[userId].email === email) {
+      return userDatabase[userId];
     }
   }
   return null;
 }
 
-const urlsForUser = function (id) {
+const urlsForUser = function (id, urlDatabase) {
 
   const urls = {}
   for (urlId of Object.keys(urlDatabase)) {

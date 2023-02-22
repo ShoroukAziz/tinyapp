@@ -21,7 +21,7 @@ app.use(cookieSession({
 }))
 
 // Helper Functions
-const { generateRandomString, findUserByEmail, urlsForUser } = require('./helper');
+const { generateRandomString, findUserByEmail, urlsForUser } = require('./helpers');
 
 // Databases
 const { urlDatabase, users, errorMessages } = require('./databses')
@@ -47,7 +47,7 @@ app.post("/login", (req, res) => {
   let error = false;
   let errorMessage = "";
 
-  const user = findUserByEmail(req.body.email);
+  const user = findUserByEmail(req.body.email, users);
 
 
   if (!req.body.email || !req.body.password) {
@@ -100,7 +100,7 @@ app.post("/register", (req, res) => {
     errorMessage = errorMessages.emptyEmailOrPassword;
   }
 
-  else if (findUserByEmail(req.body.email)) {
+  else if (findUserByEmail(req.body.email, users)) {
     error = true;
     errorMessage = errorMessages.exisitingEmail
   }
@@ -135,7 +135,7 @@ app.get("/urls", (req, res) => {
     res.render("forbidden");
     return;
   }
-  const templateVars = { urls: urlsForUser(user_id), user: users[user_id] };
+  const templateVars = { urls: urlsForUser(user_id, urlDatabase), user: users[user_id] };
   res.render("urls_index", templateVars);
 
 });
