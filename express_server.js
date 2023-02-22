@@ -1,6 +1,7 @@
 const express = require("express");
 const cookieSession = require('cookie-session')
 const bcrypt = require("bcryptjs");
+const methodOverride = require('method-override')
 
 const app = express();
 const PORT = 8080;
@@ -11,6 +12,8 @@ app.set("view engine", "ejs");
 // Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
+app.use(methodOverride('_method'))
+
 
 app.use(cookieSession({
   name: 'session',
@@ -199,7 +202,7 @@ app.get("/urls/:id", (req, res) => {
 });
 
 //Update
-app.post("/urls/:id", (req, res) => {
+app.put("/urls/:id", (req, res) => {
 
   const user_id = req.session.user_id;
   if (!user_id) {
@@ -227,7 +230,7 @@ app.post("/urls/:id", (req, res) => {
 
 });
 //Delete
-app.post("/urls/:id/delete", (req, res) => {
+app.delete("/urls/:id", (req, res) => {
 
   const user_id = req.session.user_id;
   if (!user_id) {

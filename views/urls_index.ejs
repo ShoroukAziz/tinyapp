@@ -41,12 +41,12 @@
                   <%= urls[id].createdDate %>
                 </td>
                 <td>
-                  <form method="get" action="/urls/<%= id %>">
+                  <form method="GET" action="/urls/<%= id %>">
                     <button type="submit" class="btn btn-outline-primary">Edit</button>
                   </form>
                 </td>
                 <td>
-                  <form method="POST" action="/urls/<%= id %>/delete">
+                  <form method="POST" action="/urls/<%= id %>?_method=DELETE">
                     <button class="btn btn-outline-danger" type="submit">Delete</button>
                   </form>
                 </td>
