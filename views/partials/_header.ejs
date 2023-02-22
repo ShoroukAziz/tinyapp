@@ -11,12 +11,8 @@
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 
       <div class="navbar-nav mr-auto">
-        <% if (locals.user) { %>
-
-          <a class="nav-item nav-link" href="/urls"><i class="fas fa-list"></i> My URLs</a>
-          <a class="nav-item nav-link" href="/urls/new"><i class="fas fa-plus-square"></i> Create New URL</a>
-
-          <%}%>
+        <a class="nav-item nav-link" href="/urls"><i class="fas fa-list"></i> My URLs</a>
+        <a class="nav-item nav-link" href="/urls/new"><i class="fas fa-plus-square"></i> Create New URL</a>
       </div>
 
       <% if (locals.user) { %>
