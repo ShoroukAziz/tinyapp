@@ -1,4 +1,7 @@
 const users = require('./databses').users;
+const urlDatabase = require('./databses').urlDatabase;
+
+
 /*
  returns a string of 6 random alphanumeric characters
 */
@@ -23,4 +26,15 @@ const findUserByEmail = function (email) {
   return null;
 }
 
-module.exports = { generateRandomString, findUserByEmail };
+const urlsForUser = function (id) {
+
+  const urls = {}
+  for (urlId of Object.keys(urlDatabase)) {
+    if (urlDatabase[urlId].userID === id) {
+      urls[urlId] = urlDatabase[urlId];
+    }
+  }
+  return urls;
+}
+
+module.exports = { generateRandomString, findUserByEmail, urlsForUser };
