@@ -118,6 +118,10 @@ app.get("/", (req, res) => {
 
 app.get("/urls", (req, res) => {
 
+  if (!req.cookies['user_id']) {
+    res.render("forbidden");
+    return;
+  }
   const templateVars = { urls: urlDatabase, user: users[req.cookies['user_id']] };
   res.render("urls_index", templateVars);
 
@@ -151,7 +155,6 @@ app.post("/urls", (req, res) => {
 });
 //Read
 app.get("/urls/:id", (req, res) => {
-
 
   if (urlDatabase[req.params.id]) {
     const templateVars = {
