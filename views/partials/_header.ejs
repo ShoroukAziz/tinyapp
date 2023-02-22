@@ -17,13 +17,16 @@
 
         <span class="ext-capitalize text-light">Welcome <%- user.email %>!&nbsp;</span>
         <form class="form-inline" method="POST" action="/logout">
-          <button class=" btn btn-light my-2 my-sm-0" type="submit"><i class="fas fa-sign-out-alt"></i>
+          <button class=" btn btn-light btn-outline-success my-2 my-sm-0" type="submit"><i
+              class="fas fa-sign-out-alt"></i>
             Logout</button>
         </form>
 
         <%} else { %>
-          <a href="/login" class=" btn btn-light mr-1" role="button"><i class="fas fa-sign-in-alt"></i> Login</a>
-          <a href="/register" class=" btn btn-light " role="button"><i class="fas fa-user-plus"></i> Register</a>
+          <a href="/login" class=" btn btn-light mr-1 btn-outline-success" role="button"><i
+              class="fas fa-sign-in-alt"></i> Login</a>
+          <a href="/register" class=" btn btn-light btn-outline-success" role="button"><i class="fas fa-user-plus"></i>
+            Register</a>
           <% } %>
 
 
