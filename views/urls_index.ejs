@@ -9,52 +9,64 @@
     <%- include ('partials/_header') %>
 
       <main style="margin: 1em;">
-        <h3>My URLs</h3>
-        <table class="table">
-          <thead>
-            <tr class="text-success">
-              <th scope="col">Short URL ID</th>
-              <th scope="col">Long URL</th>
-              <th scope="col">Short URL</th>
-              <th scope="col">Created Date</th>
-              <th scope="col">Edit</th>
-              <th scope="col">Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% for (let id in urls) { %>
-              <tr>
-                <td>
-                  <%= id %>
-                </td>
-                <td>
-                  <a href="<%= urls[id].longURL %>" target="_blank">
-                    <%= urls[id].longURL %>
-                  </a>
-                </td>
-                <td>
-                  <a href="/u/<%= id %>" target="_blank">
-                    <%= id %>
-                  </a>
-                </td>
-                <td>
-                  <%= urls[id].createdDate %>
-                </td>
-                <td>
-                  <form method="GET" action="/urls/<%= id %>">
-                    <button type="submit" class="btn btn-outline-primary"><i class="fas fa-edit"></i>
-                      Edit</button>
-                  </form>
-                </td>
-                <td>
-                  <form method="POST" action="/urls/<%= id %>?_method=DELETE">
-                    <button class="btn btn-outline-danger" type="submit"><i class="fas fa-trash"></i> Delete</button>
-                  </form>
-                </td>
-              </tr>
-              <% } %>
-          </tbody>
-        </table>
+
+
+        <% if (Object.keys(urls).length===0) { %>
+          <div class="container bg-light text-center p-5">
+            <h3 class="mb-3"> You Don't have any URLs! </h3>
+            <a href="/urls/new" class=" btn btn-outline-primary" role="button"><i class="fas fa-plus-square"></i>
+              Create New URL </a>
+          </div>
+
+          <%} else { %>
+            <h3>My URLs</h3>
+            <table class="table">
+              <thead>
+                <tr class="text-success">
+                  <th scope="col">Short URL ID</th>
+                  <th scope="col">Long URL</th>
+                  <th scope="col">Short URL</th>
+                  <th scope="col">Created Date</th>
+                  <th scope="col">Edit</th>
+                  <th scope="col">Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% for (let id in urls) { %>
+                  <tr>
+                    <td>
+                      <%= id %>
+                    </td>
+                    <td>
+                      <a href="<%= urls[id].longURL %>" target="_blank">
+                        <%= urls[id].longURL %>
+                      </a>
+                    </td>
+                    <td>
+                      <a href="/u/<%= id %>" target="_blank">
+                        <%= id %>
+                      </a>
+                    </td>
+                    <td>
+                      <%= urls[id].createdDate %>
+                    </td>
+                    <td>
+                      <form method="GET" action="/urls/<%= id %>">
+                        <button type="submit" class="btn btn-outline-primary"><i class="fas fa-edit"></i>
+                          Edit</button>
+                      </form>
+                    </td>
+                    <td>
+                      <form method="POST" action="/urls/<%= id %>?_method=DELETE">
+                        <button class="btn btn-outline-danger" type="submit"><i class="fas fa-trash"></i>
+                          Delete</button>
+                      </form>
+                    </td>
+                  </tr>
+                  <% } %>
+              </tbody>
+            </table>
+            <% } %>
       </main>
       <%- include('partials/_bootstrap_js') %>
 
