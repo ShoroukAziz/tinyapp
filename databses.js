@@ -1,18 +1,20 @@
 const urlDatabase = {
   "b2xVn2": {
     longURL: "http://www.lighthouselabs.ca",
-    createdDate: "2023-02-20"
+    createdDate: "2023-02-20",
+    userID: "aJ48lW",
   },
   "9sm5xK": {
     longURL: "http://www.google.com",
-    createdDate: "2023-02-21"
+    createdDate: "2023-02-21",
+    userID: "aJ48lW",
   }
 };
 
 
 const users = {
   userRandomID: {
-    id: "userRandomID",
+    id: "aJ48lW",
     email: "user@example.com",
     password: "purple-monkey-dinosaur",
   },
