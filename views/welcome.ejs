@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<%- include('partials/_head',{title:'TinyApp'}) %>
+
+  <body>
+
+    <%- include ('partials/_header') %>
+
+      <main style="margin: 1em;">
+        <div class="container m-4 p-4">
+          <h1>Welcome to <span
+              style="color:#28A745; font-family: 'Patrick Hand SC', cursive; font-size: 1.5em;">tinyApp</span> </h1>
+          <h3>The ultimate solution for creating short and snappy URLs!</h3>
+
+          <div class="row">
+            <div class="col-sm-12 col-md-8">
+
+              <article>
+                <p>
+
+                  With tinyApp, you can quickly and easily create custom, tiny URLs for your long links. No more
+                  lengthy,
+                  confusing links
+                  to share or remember – just enter your original URL into our app, and we'll generate a concise,
+                  memorable
+                  link
+                  that you
+                  can use in all your communications.
+                </p>
+                <p>Our app is perfect for businesses, social media influencers, bloggers, and anyone who wants to
+                  simplify
+                  their
+                  online
+                  presence. Share your links on social media, email, or any other platform – and rest assured that your
+                  audience
+                  will be
+                  able to easily access your content.</p>
+
+                <p>With features like link tracking and analytics, you can also gain insights into how your links are
+                  performing, Plus, our intuitive interface
+                  makes it easy to manage all your links and keep them organized.</p>
+
+                </p>
+                At tinyApp, we take your privacy and security seriously.we never collect or sell your data.
+                </p>
+
+                <p>
+                  So why wait? Sign up for tinyApp today and start creating the perfect, tiny URLs for all your online
+                  needs!
+
+                </p>
+              </article>
+              <a href="/login" class=" btn btn-success mr-1" role="button"><i class="fas fa-sign-in-alt"></i>
+                Login</a>
+              <a href="/register" class=" btn btn-success" role="button"><i class="fas fa-user-plus"></i>
+                Register</a>
+            </div>
+            <div class="col-sm-12 col-md-4">
+              <img width="320" src="/home.png" alt="">
+            </div>
+
+          </div>
+
+
+
+        </div>
+
+
+      </main>
+      <%- include('partials/_bootstrap_js') %>
+
+  </body>
+
+</html>
