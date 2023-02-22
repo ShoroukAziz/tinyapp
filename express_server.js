@@ -204,7 +204,7 @@ app.get("/urls/:id", (req, res) => {
     return;
   }
   res.status(404);
-  res.render("not_found", { username: req.cookies["username"] });
+  res.render("not_found", { user: users[req.cookies['user_id']] });
   return;
 
 });
