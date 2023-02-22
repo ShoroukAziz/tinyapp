@@ -156,6 +156,11 @@ app.post("/urls", (req, res) => {
 //Read
 app.get("/urls/:id", (req, res) => {
 
+  if (!req.cookies['user_id']) {
+    res.render("forbidden");
+    return;
+  }
+
   if (urlDatabase[req.params.id]) {
     const templateVars = {
       id: req.params.id,
