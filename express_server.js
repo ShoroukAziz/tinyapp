@@ -125,13 +125,23 @@ app.get("/urls", (req, res) => {
 
 //Create
 app.get("/urls/new", (req, res) => {
+
+  if (!req.cookies['user_id']) {
+    res.redirect('/login');
+    return;
+  }
   res.render("urls_new", { user: users[req.cookies['user_id']] });
 });
 
 app.post("/urls", (req, res) => {
 
-  const shortUrl = generateRandomString();
+  if (!req.cookies['user_id']) {
+    res.status(403);
+    res.render('forbidden');
+    return;
+  }
 
+  const shortUrl = generateRandomString();
   urlDatabase[shortUrl] = {
     longURL: req.body.longURL,
     createdDate: new Date().toISOString().split('T')[0]
@@ -139,7 +149,6 @@ app.post("/urls", (req, res) => {
   res.redirect(`/urls/${shortUrl}`);
 
 });
-
 //Read
 app.get("/urls/:id", (req, res) => {
 
