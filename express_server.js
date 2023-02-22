@@ -69,7 +69,9 @@ const users = {
 
 const errorMessages = {
   emptyEmailOrPassword: "Email and password can't be empty.",
-  exisitingEmail: "The email you're trying to use already exist"
+  exisitingEmail: "The email you're trying to use already exist",
+  userNotFound: "There's no user registered with that email.",
+  wrongPassword: "The email and password you typed don't match."
 }
 
 //
@@ -86,8 +88,33 @@ app.get("/login", (req, res) => {
 
 
 app.post("/login", (req, res) => {
-  //todo
-  res.cookie('username', req.body.username)
+  let error = false;
+  let errorMessage = "";
+
+  const user = findUserByEmail(req.body.email);
+
+
+  if (!req.body.email || !req.body.password) {
+    error = true;
+    errorMessage = errorMessages.emptyEmailOrPassword;
+  }
+
+  else if (!user) {
+    error = true;
+    errorMessage = errorMessages.userNotFound;
+  }
+  else if (user.password !== req.body.password) {
+    error = true;
+    errorMessage = errorMessages.wrongPassword;
+  }
+
+  if (error) {
+    templateVars = { errorMessage };
+    res.status(403);
+    res.render("login", templateVars);
+    return;
+  }
+  res.cookie('user_id', user.id);
   res.redirect("/urls");
 })
 
