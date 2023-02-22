@@ -129,7 +129,7 @@ app.get('/urls', (req, res) => {
 
   const userId = req.session.user_id;
   if (!userId) {
-    res.render('welcome');
+    res.render('forbidden');
     return;
   }
   const templateVars = { urls: urlsForUser(userId, urlDatabase), user: users[userId] };
