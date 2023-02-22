@@ -2,6 +2,7 @@ const express = require('express');
 const cookieSession = require('cookie-session');
 const bcrypt = require('bcryptjs');
 const methodOverride = require('method-override');
+const morgan = require('morgan');
 
 const app = express();
 const PORT = 8080;
@@ -13,7 +14,7 @@ app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.use(methodOverride('_method'));
-
+app.use(morgan('dev'))
 
 app.use(cookieSession({
   name: 'session',
