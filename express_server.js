@@ -128,8 +128,7 @@ app.get('/urls', (req, res) => {
 app.get('/urls/new', (req, res) => {
 
   if (!req.session.user_id) {
-    res.redirect('/login');
-    return;
+    return res.status(403).redirect('/login');
   }
   res.render('urls_new', { user: users[req.session.user_id] });
 });
@@ -137,9 +136,7 @@ app.get('/urls/new', (req, res) => {
 app.post('/urls', (req, res) => {
 
   if (!req.session.user_id) {
-    res.status(403);
-    res.render('forbidden');
-    return;
+    return res.status(403).render('forbidden');
   }
 
   const shortUrl = generateRandomString();
@@ -151,6 +148,7 @@ app.post('/urls', (req, res) => {
   res.redirect(`/urls/${shortUrl}`);
 
 });
+
 //Read ------------------------------------------------
 app.get('/urls/:id', (req, res) => {
 
