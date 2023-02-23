@@ -1,13 +1,13 @@
 const urlDatabase = {
   urls: {},
-  saveURL: function (url) {
+  saveURL: function(url) {
     this.urls[url.id] = url;
   }
 };
 
 const usersDatabase = {
   users: {},
-  saveUser: function (user) {
+  saveUser: function(user) {
     this.users[user.id] = user;
   }
 };

@@ -24,7 +24,7 @@ app.listen(PORT, () => {
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.use(methodOverride('_method'));
-app.use(morgan('dev'))
+app.use(morgan('dev'));
 app.use(cookieSession({
   name: 'session',
   keys: ['834975rjher43nf43895rjd98', 'gfjhg786675hg6756gf56gfhf7ui'],
@@ -136,11 +136,10 @@ app.post('/urls', (req, res) => {
 
   if (!req.body.longURL) {
     return res.status(400)
-      .render('urls_new', { user: users[req.session.user_id], errorMessage: errorMessages.emptyURL })
+      .render('urls_new', { user: users[req.session.user_id], errorMessage: errorMessages.emptyURL });
   }
   const newUrl = generateNewURL(req.body.longURL, req.session.user_id, urls);
   urlDatabase.saveURL(newUrl);
-  console.log(urls)
   res.redirect(`/urls/${newUrl.id}`);
 
 });

@@ -10,7 +10,7 @@ const bcrypt = require('bcryptjs');
  *  from 0 to 9 and A to Z
  * @return {[string]}      [6 random alphanumeric charachters]
  */
-const generateRandomString = function () {
+const generateRandomString = function() {
   return Math.random().toString(36).slice(2, 8);
 };
 
@@ -20,7 +20,7 @@ const generateRandomString = function () {
  * @param  {[object]} database [the database you want to generate a new id for]
  * @return {[number]}          [the genrated id]
  */
-const generateUniqueRandomId = function (database) {
+const generateUniqueRandomId = function(database) {
 
   const existingIds = Object.keys(database);
   const id = generateRandomString();
@@ -29,7 +29,7 @@ const generateUniqueRandomId = function (database) {
   }
   return id;
 
-}
+};
 
 /**
  * Searches for a user object in a database of users by the user email
@@ -37,7 +37,7 @@ const generateUniqueRandomId = function (database) {
  * @param  {[object]} userDatabase [the database you're searching in]
  * @return {[object]}              [The user if it exists or null]
  */
-const findUserByEmail = function (email, userDatabase) {
+const findUserByEmail = function(email, userDatabase) {
 
   for (let userId of Object.keys(userDatabase)) {
     if (userDatabase[userId].email === email) {
@@ -53,7 +53,7 @@ const findUserByEmail = function (email, userDatabase) {
  * @param  {[object]} urlDatabase [the url database]
  * @return {[object]}             [All the user's urls]
  */
-const getUrlsForUser = function (id, urlDatabase) {
+const getUrlsForUser = function(id, urlDatabase) {
 
   const urls = {};
   for (let urlId of Object.keys(urlDatabase)) {
@@ -71,14 +71,14 @@ const getUrlsForUser = function (id, urlDatabase) {
  * @param  {[object]} databse  [the users database]
  * @return {[object]}          [a new user object with a random unique id and hashed password]
  */
-const generateNewUser = function (email, password, database) {
+const generateNewUser = function(email, password, database) {
 
   return {
     id: generateUniqueRandomId(database),
     email,
     password: bcrypt.hashSync(password, 10)
-  }
-}
+  };
+};
 
 /**
  * Generates a new url object.
@@ -87,14 +87,14 @@ const generateNewUser = function (email, password, database) {
  * @param  {[object]} databse [the urls database]
  * @return {[object]}         [a new url object with a random unique id (short url) and created time]
  */
-const generateNewURL = function (longURL, userID, database) {
+const generateNewURL = function(longURL, userID, database) {
   return {
     id: generateUniqueRandomId(database),
     longURL,
     createdDate: new Date().toISOString().split('T')[0],
     userID
-  }
-}
+  };
+};
 
 
 module.exports = { findUserByEmail, getUrlsForUser, generateNewUser, generateNewURL };
