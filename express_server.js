@@ -109,11 +109,11 @@ app.get('/', (req, res) => {
 
 app.get('/urls', (req, res) => {
 
-  const userId = req.session.userId;
-  if (!userId) {
+  const user = users[req.session.userId];
+  if (!user) {
     return res.status(403).render('forbidden');
   }
-  const templateVars = { urls: getUrlsForUser(userId, urls), user: users[userId] ,urlDatabase };
+  const templateVars = { urls: getUrlsForUser(user.id, urls), user ,urlDatabase };
   res.render('urls_index', templateVars);
 
 });
@@ -122,7 +122,7 @@ app.get('/urls', (req, res) => {
 
 app.get('/urls/new', (req, res) => {
 
-  if (!req.session.userId) {
+  if (!users[req.session.userId]) {
     return res.status(403).redirect('/login');
   }
   res.render('urls_new', { user: users[req.session.userId] });
@@ -130,7 +130,7 @@ app.get('/urls/new', (req, res) => {
 
 app.post('/urls', (req, res) => {
 
-  if (!req.session.userId) {
+  if (!users[req.session.userId]) {
     return res.status(403).render('forbidden');
   }
 
@@ -147,23 +147,23 @@ app.post('/urls', (req, res) => {
 //Read ------------------------------------------------
 app.get('/urls/:id', (req, res) => {
 
-  const userId = req.session.userId;
-  if (!userId) {
+  const user = users[req.session.userId];
+  if (!user) {
     return res.status(403).render('forbidden');
   }
 
   if (!urls[req.params.id]) {
-    return res.status(404).render('not_found', { user: users[req.session.userId] });
+    return res.status(404).render('not_found', {user});
   }
 
-  if (urls[req.params.id].userID !== userId) {
-    return res.status(403).render('no_permission', { user: users[req.session.userId] });
+  if (urls[req.params.id].userID !== user.id) {
+    return res.status(403).render('no_permission', {user});
   }
 
   const templateVars = {
     id: req.params.id,
     longURL: urls[req.params.id].longURL,
-    user: users[userId],
+    user: users[user.id],
     visits : urls[req.params.id].visits,
     totalVisits : urlDatabase.gettTotalVisitsForURL(req.params.id),
     uniqueVisitors :  urlDatabase.getUniqueVisitorsForURL(req.params.id),
@@ -177,19 +177,19 @@ app.get('/urls/:id', (req, res) => {
 
 app.put('/urls/:id', (req, res) => {
 
-  const userId = req.session.userId;
+  const user = users[req.session.userId];
 
-  if (!userId) {
+  if (!user) {
     return res.status(403).render('forbidden');
   }
   const shortUrl = req.params.id;
 
   if (!urls[shortUrl]) {
-    return res.status(404).render('not_found', { user: users[req.session.userId] });
+    return res.status(404).render('not_found', {user});
   }
 
-  if (urls[shortUrl].userID !== userId) {
-    return res.status(403).render('no_permission', { user: users[req.session.userId] });
+  if (urls[shortUrl].userID !== user.id) {
+    return res.status(403).render('no_permission', {user});
   }
 
   const newLongURL = req.body.longURL;
@@ -203,15 +203,15 @@ app.put('/urls/:id', (req, res) => {
 
 app.delete('/urls/:id', (req, res) => {
 
-  const userId = req.session.userId;
-  if (!userId) {
+  const user = users[req.session.userId];
+  if (!user) {
     return res.status(403).render('forbidden');
   }
   if (!urls[req.params.id]) {
-    return res.status(404).render('not_found', { user: users[req.session.userId] });
+    return res.status(404).render('not_found', {user});
   }
-  if (urls[req.params.id].userID !== userId) {
-    return res.status(403).render('no_permission', { user: users[req.session.userId] });
+  if (urls[req.params.id].userID !== user.id) {
+    return res.status(403).render('no_permission', {user});
   }
 
   delete urls[req.params.id];
