@@ -7,7 +7,7 @@ const morgan = require('morgan');
 const app = express();
 const PORT = 8080;
 
-// Server Config
+// Server Config ------------------------------------------------
 app.set('view engine', 'ejs');
 
 // Middleware
@@ -23,19 +23,19 @@ app.use(cookieSession({
   maxAge: 24 * 60 * 60 * 1000 // 24 hours
 }));
 
-// Helper Functions
+// Helper Functions ------------------------------------------------
 const { generateRandomString, findUserByEmail, urlsForUser } = require('./helpers');
 
 // Databases
 const { urlDatabase, users, errorMessages } = require('./databses');
 
 
-//
-// Routes
-//
+
+// Routes ------------------------------------------------
 
 
-// Login
+
+// Login ------------------------------------------------
 app.get('/login', (req, res) => {
 
   if (req.session.user_id) {
@@ -73,13 +73,15 @@ app.post('/login', (req, res) => {
   res.redirect('/urls');
 });
 
-// Logout
+// Logout ------------------------------------------------
+
 app.post('/logout', (req, res) => {
   req.session = null;
   res.redirect('/login');
 });
 
-// Register
+// Register ------------------------------------------------
+
 app.get('/register', (req, res) => {
 
   if (req.session.user_id) {
@@ -121,7 +123,8 @@ app.post('/register', (req, res) => {
   res.redirect('/urls');
 });
 
-//Home Page
+//Home Page ------------------------------------------------
+
 app.get('/', (req, res) => {
   res.redirect('/urls');
 });
@@ -138,7 +141,8 @@ app.get('/urls', (req, res) => {
 
 });
 
-//Create
+//Create ------------------------------------------------
+
 app.get('/urls/new', (req, res) => {
 
   if (!req.session.user_id) {
@@ -165,7 +169,7 @@ app.post('/urls', (req, res) => {
   res.redirect(`/urls/${shortUrl}`);
 
 });
-//Read
+//Read ------------------------------------------------
 app.get('/urls/:id', (req, res) => {
 
   const userId = req.session.user_id;
@@ -196,7 +200,8 @@ app.get('/urls/:id', (req, res) => {
 
 });
 
-//Update
+//Update ------------------------------------------------
+
 app.put('/urls/:id', (req, res) => {
 
   const userId = req.session.user_id;
@@ -224,7 +229,8 @@ app.put('/urls/:id', (req, res) => {
   return;
 
 });
-//Delete
+
+//Delete ------------------------------------------------
 app.delete('/urls/:id', (req, res) => {
 
   const userId = req.session.user_id;
@@ -250,7 +256,9 @@ app.delete('/urls/:id', (req, res) => {
   return;
 
 });
-// Main Function
+
+// Main Function ------------------------------------------------
+
 app.get('/u/:id', (req, res) => {
 
   if (urlDatabase[req.params.id]) {
@@ -264,6 +272,7 @@ app.get('/u/:id', (req, res) => {
 
 });
 
+//------------------------------------------------
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
