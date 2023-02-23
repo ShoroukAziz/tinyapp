@@ -24,7 +24,7 @@ app.use(cookieSession({
 }));
 
 // Helper Functions ------------------------------------------------
-const { generateRandomString, findUserByEmail, urlsForUser } = require('./helpers');
+const { generateRandomString, findUserByEmail, urlsForUser, generateNewUser, saveUserToDataBase } = require('./helpers');
 
 // Databases
 const { urlDatabase, users, errorMessages } = require('./databses');
@@ -93,17 +93,11 @@ app.post('/register', (req, res) => {
   if (findUserByEmail(req.body.email, users)) {
     return res.status(409).render('register', { errorMessage: errorMessages.exisitingEmail });
   }
-
-  const userId = generateRandomString();
-  const hashedPassword = bcrypt.hashSync(req.body.password, 10);
-
-  users[userId] = {
-    id: userId,
-    email: req.body.email,
-    password: hashedPassword
-  };
-  req.session.user_id = userId;
+  const newUser = generateNewUser(req.body.email, req.body.password);
+  saveUserToDataBase(newUser, users);
+  req.session.user_id = newUser.id;
   res.redirect('/urls');
+
 });
 
 //Home Page ------------------------------------------------
