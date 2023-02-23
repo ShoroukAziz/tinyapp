@@ -103,11 +103,11 @@ const generateNewURL = function(longURL, userID, database) {
  * @param  {[string]} visitorId [the id of the visitor]
  * @return {[object]}           [a visit object with a timestamp]
  */
-const generateURLVisit = function(visitorId){
+const generateURLVisit = function(visitorId) {
   return {
     visitorId,
-    timeStamp : new Date().toISOString() 
-  }
-}
+    timeStamp : new Date().toISOString()
+  };
+};
 
 module.exports = { findUserByEmail, getUrlsForUser, generateNewUser, generateNewURL,generateURLVisit,generateUniqueRandomId };

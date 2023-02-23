@@ -226,12 +226,12 @@ app.get('/u/:id', (req, res) => {
   if (!urls[req.params.id]) {
     return res.status(404).render('not_found', { user: users[req.session.userId] });
   }
-   let visitorId = req.session.visitorId;
+  let visitorId = req.session.visitorId;
   
-  if(!visitorId){
+  if (!visitorId) {
     visitorId = generateUniqueRandomId(visitors);
     visitors.addVisitor(visitorId);
-    req.session.visitorId = visitorId
+    req.session.visitorId = visitorId;
   }
   urlDatabase.addVisit(req.params.id, generateURLVisit(visitorId));
   res.redirect(urls[req.params.id].longURL);

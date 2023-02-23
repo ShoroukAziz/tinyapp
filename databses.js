@@ -3,13 +3,13 @@ const urlDatabase = {
   saveURL: function(url) {
     this.urls[url.id] = url;
   },
-  addVisit : function(urlId, visit){
+  addVisit : function(urlId, visit) {
     this.urls[urlId].visits.push(visit);
   },
   gettTotalVisitsForURL : function(urlId) {
-      return this.urls[urlId].visits.length;
+    return this.urls[urlId].visits.length;
   },
-  getUniqueVisitorsForURL : function (urlId) {
+  getUniqueVisitorsForURL : function(urlId) {
     
     const allVisitors = this.urls[urlId].visits.map(e=>e.visitorId);
     return [...new Set(allVisitors)].length;
@@ -25,7 +25,7 @@ const usersDatabase = {
 };
 
 const visitors = {
-  addVisitor : function (visitorId) {
+  addVisitor : function(visitorId) {
     this[visitorId] = visitorId;
   }
 };
