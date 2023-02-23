@@ -77,30 +77,21 @@ app.post('/logout', (req, res) => {
 app.get('/register', (req, res) => {
 
   if (req.session.user_id) {
-    res.redirect('/urls');
-    return;
+    return res.redirect('/urls');
   }
-
   res.render('register');
+
 });
 
 app.post('/register', (req, res) => {
 
-  let error = false;
-  let errorMessage = '';
 
   if (!req.body.email || !req.body.password) {
-    error = true;
-    errorMessage = errorMessages.emptyEmailOrPassword;
-  } else if (findUserByEmail(req.body.email, users)) {
-    error = true;
-    errorMessage = errorMessages.exisitingEmail;
+    return res.status(400).render('register', { errorMessage: errorMessages.emptyEmailOrPassword });
   }
 
-  if (error) {
-    res.status(400);
-    res.render('register', { errorMessage });
-    return;
+  if (findUserByEmail(req.body.email, users)) {
+    return res.status(409).render('register', { errorMessage: errorMessages.exisitingEmail });
   }
 
   const userId = generateRandomString();
