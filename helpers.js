@@ -92,9 +92,22 @@ const generateNewURL = function(longURL, userID, database) {
     id: generateUniqueRandomId(database),
     longURL,
     createdDate: new Date().toISOString().split('T')[0],
-    userID
+    userID,
+    visits: [] ,
   };
 };
 
 
-module.exports = { findUserByEmail, getUrlsForUser, generateNewUser, generateNewURL };
+/**
+ * Generates a new visit object.
+ * @param  {[string]} visitorId [the id of the visitor]
+ * @return {[object]}           [a visit object with a timestamp]
+ */
+const generateURLVisit = function(visitorId){
+  return {
+    visitorId,
+    timeStamp : new Date().toISOString() 
+  }
+}
+
+module.exports = { findUserByEmail, getUrlsForUser, generateNewUser, generateNewURL,generateURLVisit,generateUniqueRandomId };
