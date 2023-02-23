@@ -27,7 +27,7 @@ app.use(cookieSession({
 const { generateRandomString, findUserByEmail, urlsForUser, generateNewUser, saveUserToDataBase } = require('./helpers');
 
 // Databases
-const { urlDatabase, usersDatabase, errorMessages } = require('./databses');
+const { urlDatabase, users, errorMessages } = require('./databses');
 
 
 
@@ -51,7 +51,7 @@ app.post('/login', (req, res) => {
     return res.status(400).render('login', { errorMessage: errorMessages.emptyEmailOrPassword });
   }
 
-  const user = findUserByEmail(req.body.email, usersDatabase);
+  const user = findUserByEmail(req.body.email, users);
 
   if (!user) {
     return res.status(401).render('login', { errorMessage: errorMessages.userNotFound });
@@ -90,11 +90,11 @@ app.post('/register', (req, res) => {
     return res.status(400).render('register', { errorMessage: errorMessages.emptyEmailOrPassword });
   }
 
-  if (findUserByEmail(req.body.email, usersDatabase)) {
+  if (findUserByEmail(req.body.email, users)) {
     return res.status(409).render('register', { errorMessage: errorMessages.exisitingEmail });
   }
   const newUser = generateNewUser(req.body.email, req.body.password);
-  saveUserToDataBase(newUser, usersDatabase);
+  saveUserToDataBase(newUser, users);
   req.session.user_id = newUser.id;
   res.redirect('/urls');
 
@@ -112,7 +112,7 @@ app.get('/urls', (req, res) => {
   if (!userId) {
     return res.status(403).render('forbidden');
   }
-  const templateVars = { urls: urlsForUser(userId, urlDatabase), user: usersDatabase[userId] };
+  const templateVars = { urls: urlsForUser(userId, urlDatabase), user: users[userId] };
   res.render('urls_index', templateVars);
 
 });
@@ -124,7 +124,7 @@ app.get('/urls/new', (req, res) => {
   if (!req.session.user_id) {
     return res.status(403).redirect('/login');
   }
-  res.render('urls_new', { user: usersDatabase[req.session.user_id] });
+  res.render('urls_new', { user: users[req.session.user_id] });
 });
 
 app.post('/urls', (req, res) => {
@@ -152,17 +152,17 @@ app.get('/urls/:id', (req, res) => {
   }
 
   if (!urlDatabase[req.params.id]) {
-    return res.status(404).render('not_found', { user: usersDatabase[req.session.user_id] });
+    return res.status(404).render('not_found', { user: users[req.session.user_id] });
   }
 
   if (urlDatabase[req.params.id].userID !== userId) {
-    return res.status(403).render('no_permission', { user: usersDatabase[req.session.user_id] });
+    return res.status(403).render('no_permission', { user: users[req.session.user_id] });
   }
 
   const templateVars = {
     id: req.params.id,
     longURL: urlDatabase[req.params.id].longURL,
-    user: usersDatabase[userId]
+    user: users[userId]
   };
   return res.render('urls_show', templateVars);
 
@@ -180,11 +180,11 @@ app.put('/urls/:id', (req, res) => {
   const shortUrl = req.params.id;
 
   if (!urlDatabase[shortUrl]) {
-    return res.status(404).render('not_found', { user: usersDatabase[req.session.user_id] });
+    return res.status(404).render('not_found', { user: users[req.session.user_id] });
   }
 
   if (urlDatabase[shortUrl].userID !== userId) {
-    return res.status(403).render('no_permission', { user: usersDatabase[req.session.user_id] });
+    return res.status(403).render('no_permission', { user: users[req.session.user_id] });
   }
 
   const newLongURL = req.body.longURL;
@@ -203,10 +203,10 @@ app.delete('/urls/:id', (req, res) => {
     return res.status(403).render('forbidden');
   }
   if (!urlDatabase[req.params.id]) {
-    return res.status(404).render('not_found', { user: usersDatabase[req.session.user_id] });
+    return res.status(404).render('not_found', { user: users[req.session.user_id] });
   }
   if (urlDatabase[req.params.id].userID !== userId) {
-    return res.status(403).render('no_permission', { user: usersDatabase[req.session.user_id] });
+    return res.status(403).render('no_permission', { user: users[req.session.user_id] });
   }
 
   delete urlDatabase[req.params.id];
@@ -219,7 +219,7 @@ app.delete('/urls/:id', (req, res) => {
 app.get('/u/:id', (req, res) => {
 
   if (!urlDatabase[req.params.id]) {
-    return res.status(404).render('not_found', { user: usersDatabase[req.session.user_id] });
+    return res.status(404).render('not_found', { user: users[req.session.user_id] });
   }
   res.redirect(urlDatabase[req.params.id].longURL);
 
