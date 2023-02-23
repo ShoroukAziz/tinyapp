@@ -7,9 +7,9 @@
   <body>
     <%- include ('partials/_header') %>
 
-      <div class="card text-center">
+      <div class="card ">
         <div class="card-header"></div>
-        <div class="card-body">
+        <div class="card-body text-center">
           <h5 class="card-title">TinyURL for: <a href="<%= longURL %>" target="_blank">
               <%= longURL %>
             </a>
@@ -20,7 +20,7 @@
             </a>
           </p>
         </div>
-        <div class="card-footer text-muted">
+        <div class="card-footer text-muted text-center">
 
           <h3>Edit</h3>
           <form class="col-sm-12 col-md-4 m-auto" method="POST" action="/urls/<%= id %>?_method=PUT">
@@ -38,6 +38,81 @@
           </form>
 
         </div>
+
+        <div class="container m-auto p-4 ">
+          <% if (Object.keys(visits).length===0) { %>
+            <div class="container bg-light text-center p-5">
+              <h3 class="mb-3"> No One has visited your short url yet! </h3>
+            </div>
+
+            <%} else { %>
+              <h3>Analytics</h3>
+
+              <table class="table table-hover table-success">
+                <thead>
+                  <tr>
+                    <th scope="col">Created at</th>
+                    <th scope="col">Total Visits</th>
+                    <th scope="col">Unique Visitors</th>
+                  </tr>
+                <tbody>
+                  <tr>
+                    <th scope="col">
+                      <%= createdDate %>
+                    </th>
+                    <th scope="col">
+                      <%= totalVisits %>
+                    </th>
+                    <th scope="col">
+                      <%= uniqueVisitors %>
+                    </th>
+                  </tr>
+                </tbody>
+                </thead>
+              </table>
+              <h4>Visists Log</h4>
+              <table class="table table-hover table-sm">
+                <thead>
+                  <tr class="text-success">
+                    <th scope="col">#</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">User</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% for (let i=0; i < visits.length ; i++) { %>
+                    <tr>
+                      <td>
+                        <%= i+1 %>
+                      </td>
+                      <td>
+                        <%= visits[i].timeStamp %>
+                      </td>
+                      <td>
+                        <%= visits[i].visitorId %>
+                      </td>
+
+                    </tr>
+                    <% } %>
+
+                      <td class="text-success font-weight-bold">
+                        <%= totalVisits %>
+                          <% if (totalVisits> 1) { %>
+                            visits
+                            <% } else{ %>
+                              visit
+                              <% } %>
+
+                      </td>
+                </tbody>
+              </table>
+              <% } %>
+        </div>
+
+
+
+
+
       </div>
       <%- include('partials/_bootstrap_js') %>
 
