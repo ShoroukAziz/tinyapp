@@ -93,7 +93,7 @@ app.post('/register', (req, res) => {
   if (findUserByEmail(req.body.email, users)) {
     return res.status(409).render('register', { errorMessage: errorMessages.exisitingEmail });
   }
-  const newUser = generateNewUser(req.body.email, req.body.password);
+  const newUser = generateNewUser(req.body.email, req.body.password, users);
   usersDatabase.saveUser(newUser);
 
   req.session.user_id = newUser.id;
@@ -134,8 +134,9 @@ app.post('/urls', (req, res) => {
     return res.status(403).render('forbidden');
   }
 
-  const newUrl = generateNewURL(req.body.longURL, req.session.user_id);
+  const newUrl = generateNewURL(req.body.longURL, req.session.user_id, urls);
   urlDatabase.saveURL(newUrl);
+  console.log(urls)
   res.redirect(`/urls/${newUrl.id}`);
 
 });

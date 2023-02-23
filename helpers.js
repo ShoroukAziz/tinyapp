@@ -10,9 +10,20 @@ const generateRandomString = function () {
    The default is 10. Here we're using base 36 to get a range
    from 0 to 9 and A to Z
    */
-
   return Math.random().toString(36).slice(2, 8).toUpperCase();
 };
+
+
+const generateUniqueRandomId = function (database) {
+
+  const existingIds = Object.keys(database);
+  const id = generateRandomString();
+  if (existingIds.includes(id.toString())) {
+    return generateUniqueRandomId(database);
+  }
+  return id;
+
+}
 
 const findUserByEmail = function (email, userDatabase) {
 
@@ -35,18 +46,18 @@ const getUrlsForUser = function (id, urlDatabase) {
   return urls;
 };
 
-const generateNewUser = function (email, password) {
+const generateNewUser = function (email, password, database) {
 
   return {
-    id: generateRandomString(),
+    id: generateUniqueRandomId(database),
     email,
     password: bcrypt.hashSync(password, 10)
   }
 }
 
-const generateNewURL = function (longURL, userID) {
+const generateNewURL = function (longURL, userID, database) {
   return {
-    id: generateRandomString(),
+    id: generateUniqueRandomId(database),
     longURL,
     createdDate: new Date().toISOString().split('T')[0],
     userID
