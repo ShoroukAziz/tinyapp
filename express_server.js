@@ -34,41 +34,33 @@ const { urlDatabase, users, errorMessages } = require('./databses');
 // Routes ------------------------------------------------
 
 
-
 // Login ------------------------------------------------
+
 app.get('/login', (req, res) => {
 
   if (req.session.user_id) {
-    res.redirect('/urls');
-    return;
+    return res.redirect('/urls');
   }
   res.render('login');
 });
 
 
 app.post('/login', (req, res) => {
-  let error = false;
-  let errorMessage = '';
+
+  if (!req.body.email || !req.body.password) {
+    return res.status(400).render('login', { errorMessage: errorMessages.emptyEmailOrPassword });
+  }
 
   const user = findUserByEmail(req.body.email, users);
 
-
-  if (!req.body.email || !req.body.password) {
-    error = true;
-    errorMessage = errorMessages.emptyEmailOrPassword;
-  } else if (!user) {
-    error = true;
-    errorMessage = errorMessages.userNotFound;
-  } else if (!bcrypt.compareSync(req.body.password, user.password)) {
-    error = true;
-    errorMessage = errorMessages.wrongPassword;
+  if (!user) {
+    return res.status(401).render('login', { errorMessage: errorMessages.userNotFound });
   }
 
-  if (error) {
-    res.status(403);
-    res.render('login', { errorMessage });
-    return;
+  if (!bcrypt.compareSync(req.body.password, user.password)) {
+    return res.status(401).render('login', { errorMessage: errorMessages.wrongPassword });
   }
+
   req.session.user_id = user.id;
   res.redirect('/urls');
 });
