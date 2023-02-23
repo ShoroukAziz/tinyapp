@@ -88,3 +88,5 @@ https://user-images.githubusercontent.com/27028706/220885021-be82ac72-034b-4340-
 
 ## ⚠️ Disclaimer
 - This is a project for [LHL web development bootcamp](https://www.lighthouselabs.ca/) and is not meant for production use
+
+<img src="https://camo.githubusercontent.com/7dd59506447a5060c5df4ab9da2c7a3fefcb0e1cd86ba40d31a45666bc98e6e0/687474703a2f2f466f7254686542616467652e636f6d2f696d616765732f6261646765732f6275696c742d776974682d6c6f76652e737667"/>
