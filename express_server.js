@@ -7,10 +7,10 @@ const methodOverride = require('method-override');
 const morgan = require('morgan');
 
 // Helper Functions ------------------------------------------------
-const { findUserByEmail, getUrlsForUser, generateNewUser, generateNewURL } = require('./helpers');
+const { findUserByEmail, getUrlsForUser, generateNewUser, generateNewURL,generateURLVisit, generateUniqueRandomId } = require('./helpers');
 
 // Databases
-const { urls, urlDatabase, users, usersDatabase, errorMessages } = require('./databses');
+const { urls, urlDatabase, users, usersDatabase, errorMessages, visitors } = require('./databses');
 
 // Server Config --------------------------------------------------
 const PORT = 8080;
@@ -163,7 +163,11 @@ app.get('/urls/:id', (req, res) => {
   const templateVars = {
     id: req.params.id,
     longURL: urls[req.params.id].longURL,
-    user: users[userId]
+    user: users[userId],
+    visits : urls[req.params.id].visits,
+    totalVisits : urlDatabase.gettTotalVisitsForURL(req.params.id),
+    uniqueVisitors :  urlDatabase.getUniqueVisitorsForURL(req.params.id),
+    createdDate : urls[req.params.id].createdDate,
   };
   return res.render('urls_show', templateVars);
 
