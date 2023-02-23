@@ -37,7 +37,8 @@
 ```
 ---
 ## Product Overview
-Coming soon!
+https://user-images.githubusercontent.com/27028706/220885021-be82ac72-034b-4340-99e9-8f68753f32e3.mp4
+
 
 ---
   ## 📦 Dependencies
