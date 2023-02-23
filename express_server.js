@@ -116,8 +116,7 @@ app.get('/urls', (req, res) => {
 
   const userId = req.session.user_id;
   if (!userId) {
-    res.render('forbidden');
-    return;
+    return res.status(403).render('forbidden');
   }
   const templateVars = { urls: urlsForUser(userId, urlDatabase), user: users[userId] };
   res.render('urls_index', templateVars);
