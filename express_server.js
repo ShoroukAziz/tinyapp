@@ -38,7 +38,7 @@ app.use(cookieSession({
 
 app.get('/login', (req, res) => {
 
-  if (req.session.user_id) {
+  if (req.session.userId) {
     return res.redirect('/urls');
   }
   res.render('login');
@@ -61,7 +61,7 @@ app.post('/login', (req, res) => {
     return res.status(401).render('login', { errorMessage: errorMessages.wrongPassword });
   }
 
-  req.session.user_id = user.id;
+  req.session.userId = user.id;
   res.redirect('/urls');
 });
 
@@ -76,7 +76,7 @@ app.post('/logout', (req, res) => {
 
 app.get('/register', (req, res) => {
 
-  if (req.session.user_id) {
+  if (req.session.userId) {
     return res.redirect('/urls');
   }
   res.render('register');
@@ -96,7 +96,7 @@ app.post('/register', (req, res) => {
   const newUser = generateNewUser(req.body.email, req.body.password, users);
   usersDatabase.saveUser(newUser);
 
-  req.session.user_id = newUser.id;
+  req.session.userId = newUser.id;
   res.redirect('/urls');
 
 });
@@ -109,7 +109,7 @@ app.get('/', (req, res) => {
 
 app.get('/urls', (req, res) => {
 
-  const userId = req.session.user_id;
+  const userId = req.session.userId;
   if (!userId) {
     return res.status(403).render('forbidden');
   }
@@ -122,23 +122,23 @@ app.get('/urls', (req, res) => {
 
 app.get('/urls/new', (req, res) => {
 
-  if (!req.session.user_id) {
+  if (!req.session.userId) {
     return res.status(403).redirect('/login');
   }
-  res.render('urls_new', { user: users[req.session.user_id] });
+  res.render('urls_new', { user: users[req.session.userId] });
 });
 
 app.post('/urls', (req, res) => {
 
-  if (!req.session.user_id) {
+  if (!req.session.userId) {
     return res.status(403).render('forbidden');
   }
 
   if (!req.body.longURL) {
     return res.status(400)
-      .render('urls_new', { user: users[req.session.user_id], errorMessage: errorMessages.emptyURL });
+      .render('urls_new', { user: users[req.session.userId], errorMessage: errorMessages.emptyURL });
   }
-  const newUrl = generateNewURL(req.body.longURL, req.session.user_id, urls);
+  const newUrl = generateNewURL(req.body.longURL, req.session.userId, urls);
   urlDatabase.saveURL(newUrl);
   res.redirect(`/urls/${newUrl.id}`);
 
@@ -147,17 +147,17 @@ app.post('/urls', (req, res) => {
 //Read ------------------------------------------------
 app.get('/urls/:id', (req, res) => {
 
-  const userId = req.session.user_id;
+  const userId = req.session.userId;
   if (!userId) {
     return res.status(403).render('forbidden');
   }
 
   if (!urls[req.params.id]) {
-    return res.status(404).render('not_found', { user: users[req.session.user_id] });
+    return res.status(404).render('not_found', { user: users[req.session.userId] });
   }
 
   if (urls[req.params.id].userID !== userId) {
-    return res.status(403).render('no_permission', { user: users[req.session.user_id] });
+    return res.status(403).render('no_permission', { user: users[req.session.userId] });
   }
 
   const templateVars = {
@@ -173,7 +173,7 @@ app.get('/urls/:id', (req, res) => {
 
 app.put('/urls/:id', (req, res) => {
 
-  const userId = req.session.user_id;
+  const userId = req.session.userId;
 
   if (!userId) {
     return res.status(403).render('forbidden');
@@ -181,11 +181,11 @@ app.put('/urls/:id', (req, res) => {
   const shortUrl = req.params.id;
 
   if (!urls[shortUrl]) {
-    return res.status(404).render('not_found', { user: users[req.session.user_id] });
+    return res.status(404).render('not_found', { user: users[req.session.userId] });
   }
 
   if (urls[shortUrl].userID !== userId) {
-    return res.status(403).render('no_permission', { user: users[req.session.user_id] });
+    return res.status(403).render('no_permission', { user: users[req.session.userId] });
   }
 
   const newLongURL = req.body.longURL;
@@ -199,15 +199,15 @@ app.put('/urls/:id', (req, res) => {
 
 app.delete('/urls/:id', (req, res) => {
 
-  const userId = req.session.user_id;
+  const userId = req.session.userId;
   if (!userId) {
     return res.status(403).render('forbidden');
   }
   if (!urls[req.params.id]) {
-    return res.status(404).render('not_found', { user: users[req.session.user_id] });
+    return res.status(404).render('not_found', { user: users[req.session.userId] });
   }
   if (urls[req.params.id].userID !== userId) {
-    return res.status(403).render('no_permission', { user: users[req.session.user_id] });
+    return res.status(403).render('no_permission', { user: users[req.session.userId] });
   }
 
   delete urls[req.params.id];
@@ -220,7 +220,7 @@ app.delete('/urls/:id', (req, res) => {
 app.get('/u/:id', (req, res) => {
 
   if (!urls[req.params.id]) {
-    return res.status(404).render('not_found', { user: users[req.session.user_id] });
+    return res.status(404).render('not_found', { user: users[req.session.userId] });
   }
    let visitorId = req.session.visitorId;
   
