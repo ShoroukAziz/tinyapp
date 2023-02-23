@@ -134,6 +134,10 @@ app.post('/urls', (req, res) => {
     return res.status(403).render('forbidden');
   }
 
+  if (!req.body.longURL) {
+    return res.status(400)
+      .render('urls_new', { user: users[req.session.user_id], errorMessage: errorMessages.emptyURL })
+  }
   const newUrl = generateNewURL(req.body.longURL, req.session.user_id, urls);
   urlDatabase.saveURL(newUrl);
   console.log(urls)
