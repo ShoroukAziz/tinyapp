@@ -1,27 +1,10 @@
+// Imports -------------------------------------------------------
+
 const express = require('express');
 const cookieSession = require('cookie-session');
 const bcrypt = require('bcryptjs');
 const methodOverride = require('method-override');
 const morgan = require('morgan');
-
-const app = express();
-const PORT = 8080;
-
-// Server Config ------------------------------------------------
-app.set('view engine', 'ejs');
-
-// Middleware
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public'));
-app.use(methodOverride('_method'));
-app.use(morgan('dev'))
-
-app.use(cookieSession({
-  name: 'session',
-  keys: ['key1', 'key2'],
-  // Cookie Options
-  maxAge: 24 * 60 * 60 * 1000 // 24 hours
-}));
 
 // Helper Functions ------------------------------------------------
 const { findUserByEmail, getUrlsForUser, generateNewUser, generateNewURL } = require('./helpers');
@@ -29,9 +12,26 @@ const { findUserByEmail, getUrlsForUser, generateNewUser, generateNewURL } = req
 // Databases
 const { urls, urlDatabase, users, usersDatabase, errorMessages } = require('./databses');
 
+// Server Config --------------------------------------------------
+const PORT = 8080;
+const app = express();
+app.set('view engine', 'ejs');
+app.listen(PORT, () => {
+  console.log(`Example app listening on port ${PORT}!`);
+});
+
+// Middleware -----------------------------------------------------
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
+app.use(methodOverride('_method'));
+app.use(morgan('dev'))
+app.use(cookieSession({
+  name: 'session',
+  keys: ['834975rjher43nf43895rjd98', 'gfjhg786675hg6756gf56gfhf7ui'],
+}));
 
 
-// Routes ------------------------------------------------
+// Routes #################################################################
 
 
 // Login ------------------------------------------------
@@ -223,8 +223,3 @@ app.get('/u/:id', (req, res) => {
 
 });
 
-//------------------------------------------------
-
-app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}!`);
-});
