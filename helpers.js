@@ -91,7 +91,7 @@ const generateNewURL = function(longURL, userID, database) {
   return {
     id: generateUniqueRandomId(database),
     longURL,
-    createdDate: new Date().toISOString().split('T')[0],
+    createdDate: new Date().toISOString(),
     userID,
     visits: [] ,
   };
