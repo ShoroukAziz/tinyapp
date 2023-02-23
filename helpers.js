@@ -44,5 +44,14 @@ const generateNewUser = function (email, password) {
   }
 }
 
+const generateNewURL = function (longURL, userID) {
+  return {
+    id: generateRandomString(),
+    longURL,
+    createdDate: new Date().toISOString().split('T')[0],
+    userID
+  }
+}
 
-module.exports = { generateRandomString, findUserByEmail, urlsForUser, generateNewUser };
+
+module.exports = { generateRandomString, findUserByEmail, urlsForUser, generateNewUser, generateNewURL };

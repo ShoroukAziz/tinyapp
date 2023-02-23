@@ -24,7 +24,7 @@ app.use(cookieSession({
 }));
 
 // Helper Functions ------------------------------------------------
-const { generateRandomString, findUserByEmail, urlsForUser, generateNewUser } = require('./helpers');
+const { generateRandomString, findUserByEmail, urlsForUser, generateNewUser, generateNewURL } = require('./helpers');
 
 // Databases
 const { urls, urlDatabase, users, usersDatabase, errorMessages } = require('./databses');
@@ -134,16 +134,9 @@ app.post('/urls', (req, res) => {
     return res.status(403).render('forbidden');
   }
 
-  const shortUrl = generateRandomString();
-
-  urlDatabase.saveURL({
-    id: shortUrl,
-    longURL: req.body.longURL,
-    createdDate: new Date().toISOString().split('T')[0],
-    userID: req.session.user_id
-  });
-
-  res.redirect(`/urls/${shortUrl}`);
+  const newUrl = generateNewURL(req.body.longURL, req.session.user_id);
+  urlDatabase.saveURL(newUrl);
+  res.redirect(`/urls/${newUrl.id}`);
 
 });
 
