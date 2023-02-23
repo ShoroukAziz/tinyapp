@@ -1,5 +1,5 @@
 const urlDatabase = {};
-const users = {};
+const usersDatabase = {};
 
 const errorMessages = {
   emptyEmailOrPassword: 'Email and password can not be empty.',
@@ -8,4 +8,4 @@ const errorMessages = {
   wrongPassword: 'The email and password you typed do not match.'
 };
 
-module.exports = { urlDatabase, users, errorMessages };
+module.exports = { urlDatabase, usersDatabase, errorMessages };
