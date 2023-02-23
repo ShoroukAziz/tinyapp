@@ -24,10 +24,10 @@ app.use(cookieSession({
 }));
 
 // Helper Functions ------------------------------------------------
-const { generateRandomString, findUserByEmail, urlsForUser, generateNewUser, saveUserToDataBase } = require('./helpers');
+const { generateRandomString, findUserByEmail, urlsForUser, generateNewUser } = require('./helpers');
 
 // Databases
-const { urlDatabase, users, errorMessages } = require('./databses');
+const { urlDatabase, users, usersDatabase, errorMessages } = require('./databses');
 
 
 
@@ -94,7 +94,8 @@ app.post('/register', (req, res) => {
     return res.status(409).render('register', { errorMessage: errorMessages.exisitingEmail });
   }
   const newUser = generateNewUser(req.body.email, req.body.password);
-  saveUserToDataBase(newUser, users);
+  usersDatabase.saveUser(newUser);
+
   req.session.user_id = newUser.id;
   res.redirect('/urls');
 

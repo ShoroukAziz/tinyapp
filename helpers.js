@@ -44,8 +44,5 @@ const generateNewUser = function (email, password) {
   }
 }
 
-const saveUserToDataBase = function (user, userDatabase) {
-  userDatabase[user.id] = user;
-}
 
-module.exports = { generateRandomString, findUserByEmail, urlsForUser, generateNewUser, saveUserToDataBase };
+module.exports = { generateRandomString, findUserByEmail, urlsForUser, generateNewUser };
