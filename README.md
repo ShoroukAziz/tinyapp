@@ -14,7 +14,7 @@
   - clone it  
   `git clone <repo> tinyapp`
   - Navigate to the repo
-  `cd tinpapp`
+  `cd tinyapp`
   - Install all the depndencies
   `npm install`
   - Run the server
@@ -23,13 +23,13 @@
 ---
 ## 🧱 Structure
 ```
-├── views          =>ejs templates & partials
+├── views                 =>ejs templates & partials
 │  ├── partials
-├─── test          =>testing code for helpers
-├─── public        =>static images
-├─── databases.js  =>databases
-├─── express_server.js =>The server
-├─── helpers.js   =>Helper functions
+├─── test                 =>testing code for helpers
+├─── public               =>static images
+├─── databases.js         =>databases
+├─── express_server.js    =>The server
+├─── helpers.js           =>Helper functions
 ├─── package-lock.json
 ├─── package.json
 └─── README.md
