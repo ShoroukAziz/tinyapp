@@ -1,4 +1,10 @@
-const urlDatabase = {};
+const urlDatabase = {
+  urls: {},
+  saveURL: function (url) {
+    this.urls[url.id] = url;
+  }
+};
+
 const usersDatabase = {
   users: {},
   saveUser: function (user) {
@@ -13,4 +19,4 @@ const errorMessages = {
   wrongPassword: 'The email and password you typed do not match.'
 };
 
-module.exports = { urlDatabase, usersDatabase, errorMessages, users: usersDatabase.users };
+module.exports = { urlDatabase, usersDatabase, errorMessages, users: usersDatabase.users, urls: urlDatabase.urls };

@@ -27,7 +27,7 @@ app.use(cookieSession({
 const { generateRandomString, findUserByEmail, urlsForUser, generateNewUser } = require('./helpers');
 
 // Databases
-const { urlDatabase, users, usersDatabase, errorMessages } = require('./databses');
+const { urls, urlDatabase, users, usersDatabase, errorMessages } = require('./databses');
 
 
 
@@ -113,7 +113,7 @@ app.get('/urls', (req, res) => {
   if (!userId) {
     return res.status(403).render('forbidden');
   }
-  const templateVars = { urls: urlsForUser(userId, urlDatabase), user: users[userId] };
+  const templateVars = { urls: urlsForUser(userId, urls), user: users[userId] };
   res.render('urls_index', templateVars);
 
 });
@@ -135,11 +135,14 @@ app.post('/urls', (req, res) => {
   }
 
   const shortUrl = generateRandomString();
-  urlDatabase[shortUrl] = {
+
+  urlDatabase.saveURL({
+    id: shortUrl,
     longURL: req.body.longURL,
     createdDate: new Date().toISOString().split('T')[0],
     userID: req.session.user_id
-  };
+  });
+
   res.redirect(`/urls/${shortUrl}`);
 
 });
@@ -152,17 +155,17 @@ app.get('/urls/:id', (req, res) => {
     return res.status(403).render('forbidden');
   }
 
-  if (!urlDatabase[req.params.id]) {
+  if (!urls[req.params.id]) {
     return res.status(404).render('not_found', { user: users[req.session.user_id] });
   }
 
-  if (urlDatabase[req.params.id].userID !== userId) {
+  if (urls[req.params.id].userID !== userId) {
     return res.status(403).render('no_permission', { user: users[req.session.user_id] });
   }
 
   const templateVars = {
     id: req.params.id,
-    longURL: urlDatabase[req.params.id].longURL,
+    longURL: urls[req.params.id].longURL,
     user: users[userId]
   };
   return res.render('urls_show', templateVars);
@@ -180,16 +183,16 @@ app.put('/urls/:id', (req, res) => {
   }
   const shortUrl = req.params.id;
 
-  if (!urlDatabase[shortUrl]) {
+  if (!urls[shortUrl]) {
     return res.status(404).render('not_found', { user: users[req.session.user_id] });
   }
 
-  if (urlDatabase[shortUrl].userID !== userId) {
+  if (urls[shortUrl].userID !== userId) {
     return res.status(403).render('no_permission', { user: users[req.session.user_id] });
   }
 
   const newLongURL = req.body.longURL;
-  urlDatabase[shortUrl].longURL = newLongURL;
+  urls[shortUrl].longURL = newLongURL;
   return res.redirect('/urls');
 
 
@@ -203,14 +206,14 @@ app.delete('/urls/:id', (req, res) => {
   if (!userId) {
     return res.status(403).render('forbidden');
   }
-  if (!urlDatabase[req.params.id]) {
+  if (!urls[req.params.id]) {
     return res.status(404).render('not_found', { user: users[req.session.user_id] });
   }
-  if (urlDatabase[req.params.id].userID !== userId) {
+  if (urls[req.params.id].userID !== userId) {
     return res.status(403).render('no_permission', { user: users[req.session.user_id] });
   }
 
-  delete urlDatabase[req.params.id];
+  delete urls[req.params.id];
   return res.redirect('/urls');
 
 });
@@ -219,10 +222,10 @@ app.delete('/urls/:id', (req, res) => {
 
 app.get('/u/:id', (req, res) => {
 
-  if (!urlDatabase[req.params.id]) {
+  if (!urls[req.params.id]) {
     return res.status(404).render('not_found', { user: users[req.session.user_id] });
   }
-  res.redirect(urlDatabase[req.params.id].longURL);
+  res.redirect(urls[req.params.id].longURL);
 
 });
 
