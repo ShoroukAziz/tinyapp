@@ -154,29 +154,23 @@ app.get('/urls/:id', (req, res) => {
 
   const userId = req.session.user_id;
   if (!userId) {
-    res.render('forbidden');
-    return;
+    return res.status(403).render('forbidden');
   }
-  if (urlDatabase[req.params.id]) {
 
-    if (urlDatabase[req.params.id].userID === userId) {
-      const templateVars = {
-        id: req.params.id,
-        longURL: urlDatabase[req.params.id].longURL,
-        user: users[userId]
-      };
-      res.render('urls_show', templateVars);
-      return;
-    }
-    res.status(403);
-    res.render('no_permission');
-    return;
-
-
+  if (!urlDatabase[req.params.id]) {
+    return res.status(404).render('not_found', { user: users[req.session.user_id] });
   }
-  res.status(404);
-  res.render('not_found', { user: users[req.session.user_id] });
-  return;
+
+  if (urlDatabase[req.params.id].userID !== userId) {
+    return res.status(403).render('no_permission', { user: users[req.session.user_id] });
+  }
+
+  const templateVars = {
+    id: req.params.id,
+    longURL: urlDatabase[req.params.id].longURL,
+    user: users[userId]
+  };
+  return res.render('urls_show', templateVars);
 
 });
 
