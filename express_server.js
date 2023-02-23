@@ -24,7 +24,7 @@ app.use(cookieSession({
 }));
 
 // Helper Functions ------------------------------------------------
-const { generateRandomString, findUserByEmail, urlsForUser, generateNewUser, generateNewURL } = require('./helpers');
+const { findUserByEmail, getUrlsForUser, generateNewUser, generateNewURL } = require('./helpers');
 
 // Databases
 const { urls, urlDatabase, users, usersDatabase, errorMessages } = require('./databses');
@@ -113,7 +113,7 @@ app.get('/urls', (req, res) => {
   if (!userId) {
     return res.status(403).render('forbidden');
   }
-  const templateVars = { urls: urlsForUser(userId, urls), user: users[userId] };
+  const templateVars = { urls: getUrlsForUser(userId, urls), user: users[userId] };
   res.render('urls_index', templateVars);
 
 });

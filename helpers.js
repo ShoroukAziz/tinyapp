@@ -24,7 +24,7 @@ const findUserByEmail = function (email, userDatabase) {
   return null;
 };
 
-const urlsForUser = function (id, urlDatabase) {
+const getUrlsForUser = function (id, urlDatabase) {
 
   const urls = {};
   for (let urlId of Object.keys(urlDatabase)) {
@@ -54,4 +54,4 @@ const generateNewURL = function (longURL, userID) {
 }
 
 
-module.exports = { generateRandomString, findUserByEmail, urlsForUser, generateNewUser, generateNewURL };
+module.exports = { findUserByEmail, getUrlsForUser, generateNewUser, generateNewURL };
