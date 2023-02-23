@@ -224,14 +224,10 @@ app.delete('/urls/:id', (req, res) => {
 
 app.get('/u/:id', (req, res) => {
 
-  if (urlDatabase[req.params.id]) {
-    res.redirect(urlDatabase[req.params.id].longURL);
-    return;
+  if (!urlDatabase[req.params.id]) {
+    return res.status(404).render('not_found', { user: users[req.session.user_id] });
   }
-  res.status(404);
-  res.render('not_found', { user: users[req.session.user_id] });
-  return;
-
+  res.redirect(urlDatabase[req.params.id].longURL);
 
 });
 
