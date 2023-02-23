@@ -201,29 +201,22 @@ app.put('/urls/:id', (req, res) => {
 });
 
 //Delete ------------------------------------------------
+
 app.delete('/urls/:id', (req, res) => {
 
   const userId = req.session.user_id;
   if (!userId) {
-    res.render('forbidden');
-    return;
+    return res.status(403).render('forbidden');
+  }
+  if (!urlDatabase[req.params.id]) {
+    return res.status(404).render('not_found', { user: users[req.session.user_id] });
+  }
+  if (urlDatabase[req.params.id].userID !== userId) {
+    return res.status(403).render('no_permission', { user: users[req.session.user_id] });
   }
 
-  if (urlDatabase[req.params.id]) {
-
-    if (urlDatabase[req.params.id].userID === userId) {
-      delete urlDatabase[req.params.id];
-      res.redirect('/urls');
-      return;
-    }
-    res.status(403);
-    res.render('no_permission');
-    return;
-
-  }
-  res.status(404);
-  res.render('not_found', { user: users[req.session.userId] });
-  return;
+  delete urlDatabase[req.params.id];
+  return res.redirect('/urls');
 
 });
 
