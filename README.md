@@ -5,6 +5,12 @@
 ## 🌟 Features
 - Generate concise, memorable short URLs from long ones.
 - Create multiple users.
+- **Analytics**
+  - See When was a URL created.
+  - keep track of how many times a given short URL is visited.
+  - keep track of how many **unique visitors** visit each url.
+  - keep track of every visit (see a timestamp, and a generated visitor_id).
+
 - **Security:** 
   - URLs can be edited or deleted only by their creator.
   - All passwords are hashed and cookies are encrypted.
@@ -23,6 +29,7 @@
 ---
 ## 🧱 Structure
 ```
+├── docs                  => screenshots for readme
 ├── views                 =>ejs templates & partials
 │  ├── partials
 ├─── test                 =>testing code for helpers
@@ -38,6 +45,24 @@
 ---
 ## Product Overview
 https://user-images.githubusercontent.com/27028706/220885021-be82ac72-034b-4340-99e9-8f68753f32e3.mp4
+
+**Register screen** <br />
+<img src="https://github.com/ShoroukAziz/tinyapp/blob/master/docs/register.PNG?raw=true"  width="400" height="230">
+
+**Login Screen** <br />
+<img src="https://github.com/ShoroukAziz/tinyapp/blob/master/docs/login.PNG?raw=true"  width="400" height="230">
+
+**URLs Screen** <br />
+<img src="https://github.com/ShoroukAziz/tinyapp/blob/master/docs/my%20urls.PNG?raw=true"  width="400" height="190">
+
+**URL Screen** <br />
+<img src="https://github.com/ShoroukAziz/tinyapp/blob/master/docs/url%20page.PNG?raw=true"  width="400" height="230">
+
+**404 Screen** <br />
+<img src="https://github.com/ShoroukAziz/tinyapp/blob/master/docs/not%20found.PNG?raw=true"  width="400" height="230">
+
+**403 Screen** <br />
+<img src="https://github.com/ShoroukAziz/tinyapp/blob/master/docs/forbidden.PNG?raw=true"  width="400" height="230">
 
 
 ---
