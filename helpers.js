@@ -110,4 +110,10 @@ const generateURLVisit = function(visitorId) {
   };
 };
 
-module.exports = { findUserByEmail, getUrlsForUser, generateNewUser, generateNewURL,generateURLVisit,generateUniqueRandomId };
+module.exports = { findUserByEmail,
+                    getUrlsForUser,
+                    generateNewUser,
+                    generateNewURL,
+                    generateURLVisit,
+                    generateUniqueRandomId,
+                    generateRandomString };
