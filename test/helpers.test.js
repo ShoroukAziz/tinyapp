@@ -1,5 +1,5 @@
 const { assert } = require('chai');
-const { findUserByEmail, urlsForUser, generateRandomString } = require('../helpers.js');
+const { findUserByEmail, getUrlsForUser, generateRandomString } = require('../helpers.js');
 
 const testUsers = {
   aJ48lW: {
@@ -47,10 +47,10 @@ describe('findUserByEmail', () => {
   });
 });
 
-describe('urlsForUser', () => {
+describe('getUrlsForUser', () => {
 
   it('should return an object with the urls that belongs to the given user only', () => {
-    const urls = urlsForUser('ah48lk', urlDatabase);
+    const urls = getUrlsForUser('ah48lk', urlDatabase);
     const expectedURLs = {
       osm5xg: {
         longURL: 'http://www.google.com',
@@ -62,7 +62,7 @@ describe('urlsForUser', () => {
   });
 
   it('should return an empty opject if the given user doen\'t exist', () => {
-    const urls = urlsForUser('45fy', urlDatabase);
+    const urls = getUrlsForUser('45fy', urlDatabase);
     assert.deepEqual(urls, {});
   });
 });
