@@ -2,6 +2,22 @@
 ### The ultimate solution for creating short and snappy URLs!
 [![made-with-node](https://img.shields.io/badge/Made%20with-Node.js%20-success)](https://nodejs.org/en/) [![made-with-express](https://img.shields.io/badge/Made%20with-Express.js%20-black)](https://expressjs.com/)
 
+## Table of Content
+- [🔗TinyApp](#tinyapp)
+    - [The ultimate solution for creating short and snappy URLs!](#the-ultimate-solution-for-creating-short-and-snappy-urls)
+  - [Table of Content](#table-of-content)
+  - [🌟 Features](#-features)
+  - [🚀 Getting Started](#-getting-started)
+  - [🧱 Main Structure](#-main-structure)
+  - [Product Overview](#product-overview)
+  - [📦 Tech Stack (Dependencies)](#-tech-stack-dependencies)
+    - [🔙 Backend](#-backend)
+    - [🧰 Development Dependencies](#-development-dependencies)
+    - [👁‍🗨 Frontend Dependencies](#-frontend-dependencies)
+  - [🧪 Testing](#-testing)
+  - [🙈 Known issues](#-known-issues)
+  - [⚠️ Disclaimer](#️-disclaimer)
+
 ## 🌟 Features
 - Generate concise, memorable short URLs from long ones.
 - Create multiple users.
@@ -17,26 +33,30 @@
 ---
 ## 🚀 Getting Started
   - Fork the repo
-  - clone it  
+  - clone it <br>
   `git clone <repo> tinyapp`
-  - Navigate to the repo
+  - Navigate to the repo<br>
   `cd tinyapp`
-  - Install all the depndencies
+  - Install all the depndencies <br>
   `npm install`
-  - Run the server
-  `npm start` or `node express_server.js`
+  - Run the server: <br>
+  `npm start`  <br>or `node express_server.js`
+  - Visit the app in your browser: `http://127.0.0.1:8080/` <br> or in your terminal:
+  <br> `curl http://127.0.0.1:8080/`
   - Create a user and start generating tiny urls 🎉🎇
+
 ---
-## 🧱 Structure
-```
-├── docs                  => screenshots for readme
-├── views                 =>ejs templates & partials
+
+## 🧱 Main Structure
+```sh
+├── docs                  # screenshots for readme
+├── views                 # ejs templates & partials
 │  ├── partials
-├─── test                 =>testing code for helpers
-├─── public               =>static images
-├─── databases.js         =>databases
-├─── express_server.js    =>The server
-├─── helpers.js           =>Helper functions
+├─── test                 # Includes testing code for helpers.js` 
+├─── public               # static images
+├─── databases.js         # database objects
+├─── express_server.js    # The server: the main driver of the app includes all the routs and server configs
+├─── helpers.js           #Includes Helper functions
 ├─── package-lock.json
 ├─── package.json
 └─── README.md
@@ -66,7 +86,8 @@ https://user-images.githubusercontent.com/27028706/220885021-be82ac72-034b-4340-
 
 
 ---
-  ## 📦 Dependencies
+## 📦 Tech Stack (Dependencies)
+  ### 🔙 Backend
   - 🚄 [Express](express.js)
   - 📰 [EJS](https://ejs.co/)
   - 🍪 [Cookie-Session](https://www.npmjs.com/package/cookie-session)
@@ -74,19 +95,28 @@ https://user-images.githubusercontent.com/27028706/220885021-be82ac72-034b-4340-
   - 📝 [Method override](https://www.npmjs.com/package/method-override)
   - 💬 [Morgan](https://www.npmjs.com/package/morgan)
 
-  ### 🧰 Development Dependencies
+ ### 🧰 Development Dependencies
   - ☕ [Mocha](https://www.npmjs.com/package/mocha)
   - 🍵 [Chai](https://www.npmjs.com/package/chai)
   - 👿 [Nodemon](https://www.npmjs.com/package/nodemon)
 
-### 👁‍🗨 Frontend Dependencies
+ ### 👁‍🗨 Frontend Dependencies
 - 🎨 [Bootstrap](https://getbootstrap.com/)
 - 🔠 [FontAwesome](https://fontawesome.com/)
 ---
+## 🧪 Testing
+- To run the tests. make sure you are in the project directory
+ `cd tinyapp`
+ - Run `npm test`
+---
 ## 🙈 Known issues
   - The url provided by the user has to start with http ot https otherwise it'll fail
-
+---
 ## ⚠️ Disclaimer
 - This is a project for [LHL web development bootcamp](https://www.lighthouselabs.ca/) and is not meant for production use
 
+
+
 <img src="https://camo.githubusercontent.com/7dd59506447a5060c5df4ab9da2c7a3fefcb0e1cd86ba40d31a45666bc98e6e0/687474703a2f2f466f7254686542616467652e636f6d2f696d616765732f6261646765732f6275696c742d776974682d6c6f76652e737667"/>
+
+[⬆ Go to beginning](#tinyapp)
