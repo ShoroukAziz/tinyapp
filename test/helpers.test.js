@@ -75,4 +75,9 @@ describe('generateRandomString', () => {
     assert.equal(string.length, 6);
   });
 
+  it('should return alphanumeric string', () => {
+    const string = generateRandomString();
+    [...string].forEach(c => assert.notEqual(c.match(/^[0-9a-z]+$/), null));
+  })
+
 });
